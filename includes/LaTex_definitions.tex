@@ -1,0 +1,226 @@
+%%%
+%
+% haeufig benoetigte Festlegungen
+%
+%%%
+
+%% Erweiterungspakete werden geladen
+
+% erlaubt direkte Verwendung von Umlauten im Quelltext (latin1)
+%\usepackage{umlaut} 
+\usepackage[utf8]{inputenc}% http://ctan.org/pkg/inputenc
+\DeclareUnicodeCharacter{20AC}{\euro}
+
+% länderspezifische Einstellungen
+% sorgt u.a. für die korrekte Silbentrennung,
+% deutsche Bezeichner ("Tabelle", "Abbildung" etc.)
+\usepackage[english]{babel}
+\sloppy %Blocksatz erzwingen
+
+% fuer deutsche W"orter in der Literaturliste
+\usepackage{bibgerm}  
+
+% Sonderzeichen, z.B. Euro mit \texteuro   
+\usepackage{textcomp}         
+
+% erlaubt einfache Auswahl der Art der Nummerierung bei Aufzählungen
+\usepackage{enumerate}
+
+% erlaubt das Einbinden von Grafiken
+\usepackage{graphicx}
+
+% erlaubt die einfache Aenderung der Seitenraennder
+%\usepackage[left=15mm,right=15mm,top=19mm,bottom=19mm]{geometry}
+
+\usepackage{tabularx}
+
+\usepackage{booktabs}  
+
+\usepackage{setspace} 
+
+\usepackage{amssymb}
+
+\usepackage{lastpage}
+
+\usepackage{multicol}
+
+\usepackage{pgf-pie,etoolbox}
+
+\usepackage{wrapfig}
+
+\usepackage{float}
+
+\usepackage{longtable}
+
+\usepackage{titleps}
+
+\usepackage{morefloats}
+
+\usepackage{eurosym}
+
+\usepackage{ifthen}
+
+\usepackage{textcomp}
+
+\usepackage{epstopdf}
+
+\usepackage{wrapfig}
+
+\usepackage{colortbl}
+
+\usepackage{listings}
+
+\usepackage[backend=bibtex,style=authortitle-comp]{biblatex} 
+
+\usepackage{setspace}
+\onehalfspacing
+
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
+\definecolor{light-gray}{gray}{0.95}
+
+% -------------------------- Lists as Sections ----------------------------------
+
+\makeatletter
+\renewcommand\listoftables{%
+    \section*{\listtablename}%
+    \addcontentsline{toc}{section}{\listtablename}
+    \@starttoc{lot}%
+}
+\renewcommand\listoffigures{%
+    \section*{\listfigurename}
+    \addcontentsline{toc}{section}{\listfigurename}
+    \@starttoc{lof}
+}
+\renewcommand\lstlistoflistings{
+    \section*{List of Listings}
+    \addcontentsline{toc}{section}{List of Listings}
+    \@starttoc{lol}
+}
+\makeatother
+
+% ------------------------------ Listings --------------------------------------
+
+\lstset{numbers=left, 
+		numberstyle=\ttfamily, 
+		breaklines=true,
+		backgroundcolor=\color{light-gray},
+		xleftmargin=.25in,
+		xrightmargin=.25in,
+		basicstyle=\ttfamily\scriptsize,
+		keywordstyle=\color{blue}\ttfamily,
+		stringstyle=\color{red}\ttfamily,
+		commentstyle=\color{gray}\ttfamily,
+		captionpos=b,
+		language=[R/3 6.10]ABAP,
+}
+
+\renewcommand\lstlistlistingname{List of Listings}
+
+% ------------------------------ Geometrie--------------------------------------
+\usepackage{geometry,blindtext}
+\geometry{a4paper,left=25mm,right=25mm, top=25mm, bottom=25mm, includeheadfoot}
+
+% ---------------------------- Page Styles -------------------------------------
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+\usepackage{fancyhdr}
+
+\fancypagestyle{fancyStyle}{
+	\fancyhf{}
+	\fancyhead[L]{\chaptername~\thechapter}
+	\fancyhead[R]{\leftmark}
+	\renewcommand{\headrulewidth}{0.4pt}% Line at the header visible
+	\fancyfoot[L]{DHBW Mannheim}
+	\fancyfoot[R]{\thepage} %pagenumber
+	\renewcommand{\footrulewidth}{0.4pt}% Line at the footer visible
+}
+
+\fancypagestyle{plain}{
+  	\fancyhf{}
+  	\renewcommand{\headrulewidth}{0pt}% Line at the header invisible
+  	\renewcommand{\footrulewidth}{0.4pt}% Line at the footer visible
+	\fancyfoot[L]{DHBW Mannheim}
+	\fancyfoot[R]{\thepage} %page number
+}
+
+% ----------------------------- Hyperlinks -------------------------------------
+\usepackage{breakurl}         % Zeilenumbruch f"ur URLs
+
+% Links zum Anklicken im DVI- und PDF-Dokument
+\usepackage{hyperref} 
+\hypersetup{colorlinks
+  ,linkcolor=black             % toc, Glossar-Begriffe, Seitenzahlen in Index und Glossar
+  ,urlcolor=black              % URLs, die mit \url{} erzeugt wurden
+  ,citecolor=black             % Literatur-Zitate, die mit \cite erzeugt wurden
+  ,filecolor=red              % Verweise auf Dateien, hier nicht verwendet
+  ,breaklinks=true            % Zeilenumbruch f"ur Links
+  ,linktocpage                % Nur Seitenzahlen sind Links, nicht ganze Zeilen
+}
+\def\UrlFont{\sffamily} 
+
+% ------------------------------ Glossar ---------------------------------------
+\usepackage[
+% nonumberlist,               % keine Seitenzahlen anzeigen
+acronym,                      % ein Abk"urzungsverzeichnis erstellen
+toc,                          % Eintr"age im Inhaltsverzeichnis
+section                       % im Inhaltsverzeichnis auf Section-Ebene erscheinen
+]{glossaries}                 % definiert den Befehl \printglossary
+\renewcommand*{\glspostdescription}{} %Den Punkt am Ende jeder Beschreibung deaktivieren
+ 
+%Ein eigenes Symbolverzeichnis erstellen
+\newglossary[slg]{symbolslist}{syi}{syg}{Symbolverzeichnis}
+
+%Glossar-Befehle anschalten
+\makeglossaries
+ 
+% ----------------------------- Stichwortverzeichnis ---------------------------
+\usepackage{makeidx}          % definiert den Befehl \printindex
+\makeindex                    % erzeugt fuenftes.idx f"ur den Index
+
+% ----------------------------- Aussehen einer Seite ---------------------------
+%\textheight240mm              % Hoehe des Textes
+%\textwidth150mm               % Breite des Textes
+%\topmargin-20mm               % oberer Rand
+%\oddsidemargin-7mm            % linker Rand bei ungeraden Seitenzahlen
+%\evensidemargin-7mm           % linker Rand bei geraden Seitenzahlen
+%\pagestyle{plain}             % plain    = Seitenzahlen, aber keine Kopfzeilen
+                              % empty    = ohne Seitenzahlen
+                              % headings = mit Kopfzeilen
+%\parindent0mm                 % kein Einr"ucken am Anfang eines Absatzes
+
+
+% kein "haengender" Einzug der ersten Zeilen eines Absatzes
+\setlength{\parindent}{0cm}
+
+% vertikaler Abstand zwischen Absätzen
+% (1ex entspricht der Höhe des Buchstabens x, diese Angabe ist
+% relativ zur gewählten Schriftgröße und passt sich somit bei
+% einer Änderung entsprechend an)
+\setlength{\parskip}{1ex}
+
+\newlength{\myx} % Variable zum Speichern der Bildbreite
+\newlength{\myy} % Variable zum Speichern der Bildhöhe
+\newcommand\includegraphicstotab[2][\relax]{%
+% Abspeichern der Bildabmessungen
+\settowidth{\myx}{\includegraphics[{#1}]{#2}}%
+\settoheight{\myy}{\includegraphics[{#1}]{#2}}%
+% das eigentliche Einfügen
+\parbox[c][1.1\myy][c]{\myx}{%
+\includegraphics[{#1}]{#2}}%
+}
+
+\makeatletter
+\renewcommand{\@chapapp}{}% Not necessary...
+\newenvironment{chapquote}[2][2em]
+  {\setlength{\@tempdima}{#1}%
+   \def\chapquote@author{#2}%
+   \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+   \itshape}
+  {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+\makeatother
+
+% ----------------------------------- Colors --------------------------------
+\definecolor{custRed}{RGB}{250,117,107}
+\definecolor{custGreen}{RGB}{169,250,107}

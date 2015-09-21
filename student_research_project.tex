@@ -1,0 +1,112 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                %
+% Student Research Project                       %
+% Phillip Schichtel & Jonas Dann, September 2015 %
+%                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[13pt,pdftex,a4paper]{scrreprt}
+
+% settings of TeX Document
+\input{includes/LaTex_definitions.tex}
+\addbibresource{includes/literature.bib}
+
+% meta data
+\hypersetup{
+    pdftitle={Optimization of Traffic Light Control Systems},
+    pdfauthor={Phillip Schichtel & Jonas Dann},
+    pdfsubject={Copyright Phillip Schichtel & Jonas Dann},
+    pdfkeywords={Traffic, DHBW Mannheim, Traffic Light},
+    pdfcreator={LaTeX, hyperref, KOMA-Script},
+  }
+
+%%%%%%%%%%%%%%%%%%%%%
+% start of document %
+\begin{document}
+
+% titlepage
+\input{includes/title.tex}
+
+% statement of authorship
+\renewcommand\chaptername{}
+\renewcommand\thechapter{}
+\input{includes/statement_of_authorship.tex}
+\pagenumbering{roman}
+\pagestyle{plain}
+\newpage
+
+%glossary
+%\input{includes/glossary.tex}
+
+% restriction note
+%\input{includes/restriction.tex}
+
+\newpage
+
+% abstract
+\input{includes/abstract.tex}
+
+% toc
+\markboth{Contents}{}
+
+\tableofcontents
+
+\pagestyle{fancyStyle}
+
+\chapter*{Indexes}
+\addcontentsline{toc}{chapter}{Indexes}
+\markboth{Indexes}{}
+
+% glossary
+%\printglossary[title=List of Abbreviations, type=\acronymtype]
+%\printglossary[title=List of Abbreviations, type=main]
+
+%lists
+\listoffigures
+\listoftables
+\lstlistoflistings
+
+\newpage
+\renewcommand\chaptername{Chapter}
+\renewcommand\thechapter{\arabic{chapter}}
+\pagenumbering{arabic}
+
+% main content
+
+\chapter{Introduction}
+\input{includes/introduction.tex}
+
+\chapter{Theoretical Essentials}
+\input{includes/preliminaries.tex}
+
+\chapter{Analysis}
+\input{includes/analysis.tex}
+
+\chapter{Concept}
+\input{includes/concept.tex}
+
+\chapter{Implementation}
+\input{includes/implementation.tex}
+
+\chapter{Result and Validation}
+\input{includes/result.tex}
+
+\chapter{Discussion and Outlook}
+\input{includes/discussion.tex}
+
+% bibliography
+\newpage
+\renewcommand\chaptername{}
+\addcontentsline{toc}{chapter}{Bibliography}
+\printbibliography
+
+% appendix
+%\appendix
+%\chapter{Appendix}
+%\renewcommand\chaptername{Appendix}
+%\input{includes/appendix.tex}
+%\label{lastpage}
+
+\end{document}
+% end of document %
+%%%%%%%%%%%%%%%%%%%
