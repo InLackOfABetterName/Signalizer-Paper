@@ -1,0 +1,12 @@
+Aimsun - No idea
+AutoTurn - Only for turns of 3d modeled vehicles
+CityTrafficSimulator - No pedestrians
+CORSIM - Not enough information on first glimpse
+DRACULA - Old
+Cube Dynasim - Link not working
+MATSim + Open source
+	- No pedestrians
+	- No GUI
+Quadstone Paramics + Could be useful
+RoadTrafficSimulator - Trash
+UAF + usable
