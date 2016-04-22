@@ -30,6 +30,8 @@
 
 ## Auxiliary and intermediate files from other packages:
 
+*.*~
+
 # algorithms
 *.alg
 *.loa
@@ -91,4 +93,7 @@ sympy-plots-for-*.tex/
 
 !grafiken/*.pdf
 session.tks
+
+# Lyx
+*.lyx
 
