@@ -93,6 +93,7 @@ sympy-plots-for-*.tex/
 
 !grafiken/*.pdf
 session.tks
+Thumbs.db
 
 # Lyx
 *.lyx
