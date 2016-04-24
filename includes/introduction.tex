@@ -4,26 +4,28 @@ Cool quote here? (none found yet - Phillip)
 
 Every city faces the challenge of street and traffic planning, and every citizen knows the struggle of driving through the city during rush-hour. Green waves, especially long lasting ones, are a rare phenomenon and it usually tends to be a waiting game. Kilometer long jams and completely congested junctions are nothing unusual and it often takes hours for them to resolve.
 
-This is not only stressful for the commuters stuck in traffic but has a serious impact on the environment.
-With increasing wait times not only decreases the driver comfort, but green-house emissions increase as well. Only very few people own cars capable of automatically turn off the engine when idling, so the engines tend to keep running. Even fewer people own hybrid or fully electric cars due to the still high initial costs.
+This is not only stressful for the commuters stuck in traffic but has a serious impact on the environment as well.
+With increasing wait times not only decreases the driver comfort, but green-house emissions increase just as much. Only very few people own cars capable of automatically turning off the engine when idling, so the engines tend to keep running. Even fewer people own hybrid or fully electric cars due to the still high initial costs.
 
-Even if the roads are not congested, a large portion of the travel time in cities comes from traffic signals. Probably everyone knows the situation of waiting at a completely empty crossing during the night, only because the traffic signal is not switching to green.
+Even if the roads are not congested, a large portion of the travel time in cities comes from signal controlled junctions. Probably everyone knows the situation of waiting at a completely empty crossing during the night, only because the traffic signal is not switching to green.
 This occurs when the signal plans are defined completely statically.
 
-In times of very cheap and reliable electronics and the Internet of Things statically defined signal schedules seem obsolete.
+In times of very cheap and reliable electronics, the Internet of Things and infrastructures capable of handling petabytes of data, statically defined signal schedules seem obsolete.
 With increasing amounts of sensors more and more accurate data becomes available for planners and the plan quality improves, but static plans can only be good in common situations that are known to the planner.
 
 A good schedule minimizes the waiting time (and thus unnecessary emissions and stress) while maximizing the throughput. Static schedules will inevitably make wrong assumptions when unusual events occur (a big soccer match, a redirection due to road maintenance or an accident).
 
-That is where adaptive signal controls come in. Adaptive control systems will use the data available by sensors and reevaluate their schedules throughout the day in certain time intervals.
-Cities currently already use sensors at traffic lights like induction spools to improve the traffic flow.\footnote{soure needed} ...
+That is where adaptive signal controls come in. Adaptive control systems will use the data collected by sensors and reevaluate their schedules throughout the day in certain time intervals.
+Cities currently already use sensors at traffic lights like induction spools.
+These sensors are mostly used to be able to skip lanes where no cars are waiting. For cost reasons (both initial cost as well as maintenance costs) sensors cannot realistically be placed at every line on every junction.
 
-%These problems can be improved by implementing good traffic light schedules. But what is a \emph{good} schedule?
+A smart adaptive control system should use the limited amount of sensors and maximize the use of the data collected by them. The data collected not just in the local junction, but the entire city network with a relatively small number of sensors placed strategically could provide enough information so that signal controls can make accurate predications of traffic flow and can thus adjust that switching schedules based on expected traffic.
 
+Such a system could not only provide decent switching schedules on junctions without any sensors at all, but could easily be improved by addition additional sensors to improve predictions.
 
-- There need to be a lot more about the idea here. We need to establish our idea before going into the preliminaries. Else the reader wont have a context when reading the preliminaries. Maybe we even have to do an extra section or chapter for the idea because it is not trivial and we should explain it well.
+\section{Idea}
 
-Cities currently already use sensors at traffic lights like induction spools to improve the traffic flow.\footnote{soure needed} As the traffic sensors can hardly be placed at every traffic light the idea of this thesis is to make a prediction for the road crossings where no sensors are present. Therefore one to multiple neural networks get fed with the traffic sensor data and predict where traffic goes and which traffic lights will receive a high load in the near future. With this information the prototype developed should calculate how to best switch the traffic lights to achieve near optimal throughput and wait times.
+Idea here?
 
 \newpage
 

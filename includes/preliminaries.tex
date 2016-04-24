@@ -12,6 +12,19 @@
 
 \newpage
 
+\section{Traffic sensors}
+
+Central for signal scheduling are statistics about the traffic flowing through the junctions. A common statistic that is usually collected: The number of cars that pass by in a certain time frame. This statistic is so simple to collect, that it is still relatively often done manually by people.
+
+In urban areas however this is becoming unpopular as automatic sensors are becoming more common. There are quite a few different types of automatic traffic sensors with different properties. These sensors can generally be divided into two groups: In-pavement sensors and over-roadway sensors.
+
+In-pavement sensors are directly embedded into the street. Common examples for these are the well known inductive loop, pneumatic road tubes and piezo-electric sensors. Inductive loops measure the inductance in their electric loop, piezo-electric sensors and pneumatic tubes measure the pressure applied on the road, to detect cars. Depending on the implementation, these sensors can not only detect a vehicle, but also classify vehicles based on weight or size. The speed of passing vehicles can usually not be detected directly, but by combining multiple of these simple sensors, is is possible to estimate the speed of the vehicles.
+The main advantage of these sensors is the cost and the simple installation. The obvious downside of in-pavement sensors is the fact that damages in the pavement will lead to damages in the sensors.
+
+Over-road sensors are mounted somewhere over the street. Usual mounting points are existing traffic signs and traffic lights. The technologies used for these sensors vary in a wide range: Infrared, radar, laser, optical cameras, sound and more. They differ in precision and use-cases. Most of them can measure not just the passage of vehicles, but also speed, vehicle class, license plates and more. These sensors do not suffer from the problems with in-pavement sensors, but have a new set of problems. Sensor that work optically are often affected by bad weather conditions that introduce to much noise in the picture. The main advantage of these sensors is the amount of additional information that can be collected and fast deployment.
+
+Given the sensors are in place and generate electrical signals for passing vehicles, these signals need to be collected somewhere. In simple systems, these sensors feed right back into local signal system. More advanced systems will collect the vehicle counts and other information in a central data center. Depending on the sensors the transmission is handled by the sensor itself or through additional devices. Modern sensors are directly connected to the Internet using the wireless broadband networks very common and reliable in cities.
+
 \section{Artificial Neural Networks}
 
 Artificial neural networks (ANNs) is an important field in machine learning and cognitive science. There are many different kinds of ANNs, but all have in common that they are inspired by biological neural networks, like the human brain. The big advantage of neural networks over algorithms that were explicitly developed for a task is that neural networks can learn behavior like classification from a set of example data and do not have to explicitly modeled. For this the neural network is modeled and the input and output vectors are defined. Then a set of example data i fed through the neural network and a learning algorithm tries to find a configuration of the neural network to get the desired outputs for the respective inputs. The ANNs form their own understanding of the problem while learning.
