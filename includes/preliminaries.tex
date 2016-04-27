@@ -12,9 +12,14 @@
 
 \newpage
 
+\section{Traffic signal guidelines}
+
+Different countries have different laws and guidelines that control how traffic signals are built and also how they are controlled.
+In Germany for example there is the ''Richtlinien für Lichtsignalanlagen`` (in english Guidelines for Light Signal Systems), short RiLSA. Relevant points are guidelines for the length of the signal phases and proposals on how to structure model driven control systems. Model driven control systems use a model of the worlds (usually the street network) and use that to plan their switching schedule.
+
 \section{Commuter stress}
 
-Commuting to work is generally not a great activity, as specially when the trip tends to be longer. Unexpected events and delays are usually stressful. Driver stress strongly correlates with time urgency as shown by the research in Aggressive Behavior (https://www.researchgate.net/profile/Dwight_Hennessy/publication/229863510_Traffic_congestion_driver_stress_and_driver_aggression/links/0deec53274dd4c9e88000000.pdf)
+Commuting to work is generally not a great activity, especially when the trip tends to be longer. Unexpected events and delays are usually stressful. Driver stress strongly correlates with time urgency as shown by the research in \cite{aggressive_behaviour}. Waiting in front of red lights might not necessarily be unexpected, but it is still stressful. Junctions blocked by a heavily congested road will finally lead to nobody being able to move, whether the light show green or not, which is very frustrating.
 
 \section{Traffic sensors}
 
@@ -99,7 +104,7 @@ With $\alpha$ being the learning, which directs how fast the network is reacting
 % https://upload.wikimedia.org/wikipedia/commons/7/7b/XOR_perceptron_net.png
 \footnotetext{wikipedia}
 
-A bit more complex than perceptrons are multilayer perceptrons. They not only have an input and an ouput layer, but also one to several hidden layers that get fed from the previous layer and feed into the following layer. With this architecture more complex problems like XOR can be solved. The structure and weights of an XOR neural network are shown in figure \ref{multilayer_XOR}
+A bit more complex than perceptrons are multilayer perceptrons. They not only have an input and an ouput layer, but also one to several hidden layers that get fed from the previous layer and feed into the following layer. With this architecture more complex problems like XOR can be solved. The structure and weights of an XOR neural network are shown in \autoref{multilayer_XOR}
 
 Above was already shown how learning in simple ANNs takes place, but besides the function that determines how much a weight of a neuron changes, ANNs are also divided by the form of learning. This depends on how the learning set given to the neural network is created and composed. In the following the three most popular are described, being supervised learning, unsupervised learning and reinforcement learning. With supervised the learning set consists of pairs of input and output vectors and it thrives to adjust the weights of the neural network so that it maps the function described by the learning set. Then there is unsupervised learning which just takes for example a cost function, that calculates some costs from the input and output of the ANN, and a learning set, only consisting of data, and tries to minimize the cost function by adjusting the weights. The third possible scenario is reinforcement learning. This happens when there is no data set to learn from, but an agent interacts with some world and learns what interactions are good and what are bad by observing the effects. This is for example used when an artificial intelligence that plays chess is playing against itself to get better.
 
