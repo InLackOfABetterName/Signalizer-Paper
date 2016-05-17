@@ -1,3 +1,5 @@
+This chapter will give an insight into the problems involved with traffic light control systems, what different solutions exist and how the problems are solved there. Based on this information the requirements for the new solution will be established.
+
 === am ende quasi requirements (ist, soll)===
 
 Traffic light control systems have basically three main problems to solve:
@@ -20,6 +22,24 @@ Which signals to switch seems to have an obvious answer: All signals red except 
 In an unrestricted intersection of two streets (see \autoref{unrestricted_intersection}), a vehicle can enter from one of four directions and can leave the intersection in any of the three remaining directions (ignoring u-turns). That makes $4 \times 3 = 12$ different traffic lights, if every way through the intersection would be signaled separately, which is the case in larger intersections. All possible groups of signals would be given by the power set of the twelve different signals, which gives $2^{12} = 4096$ different groups. Finding the desired set signal groups can be modeled as a constraint satisfaction problem which grows exponentially with the number of signals in the intersection.
 
 The second problem, deciding when to switch a certain signal group, is the main problem of this paper. Signal switching generally introduces overhead and reduces the throughput, so the amount of switches should be minimized. At the same time having to long phases will increase the latency (driver wait time) for other streets. This is also part of the third problem, how much time each phase gets. This is an optimization problem between maximizing the throughput on congested streets while still keeping the waiting times on other streets on an acceptable level. This is especially hard if two congested streets intersect.
+
+Traffic lights can be controlled in one of two ways at the highest level: Statically or adaptive.
+
+\paragraph{Static} Statically controlled traffic lights use predefined switching plans that are usually planned by a city's traffic management. In order to develop these switching plans, a lot of research has to be conducted about the expected traffic flow, including manually counting cars are installing traffic sensors. Early traffic lights have been build with their switch timings integrated into the control electronics, so the plans developed for the intersections have to be as good as possible as they cannot be changed easily. More modern static traffic control systems can be reprogrammed if necessary which can often be observed, when construction work is ongoing on a link adjacent to an intersection.
+
+\paragraph{Adaptive} Adaptively controlled traffic lights are able to dynamically adapt (hence the name) to changing traffic flow. Some systems still relay on a set of static plans to choose from (for example the SCATS, Sydney Coordinated Adaptive Traffic System), while others produce their own timing plans. These adaptive systems all depend heavily on automatic traffic sensors, some require them at every line of an intersection (for example the SCOOT, Split Cycle Offset Optimisation Technique, system). The cost of the system and the required sensor coverage is one of the reasons, adaptive control systems are still not very widely adopted. The systems often work in cycles (rounds of signal phases) and optimize the cycle time and the split (which phase gets how much time). \cite{atcs_overview}.
+
+Based in this information two main goals of this project:
+
+\begin{enumerate}
+	\item The system should be able to produce good switching plans with a small number of sensors (reduction of initial fixed cost)
+	\item Require as little manual user interaction (traffic analysts changing plans or parameters) as possible (reduction of maintenance cost)
+\end{enumerate}
+
+In order to be able to work with with street network, that is not completely covered with traffic sensors, a mechanism to get a traffic estimation of the places where no sensors are. This could be done by utilizing additional data sources ranging from manually collected statistical data used for the traditional static planning to smartphone geo-locations of drivers, which leads into the area of swarm intelligence not covered by this paper. Another approach would be to use the available sensors for a prediction model, either pre-calculated or calculated on the fly.
+
+Given a modeled street network, the system should be able gather all required information by itself. 
+
 
 - Neural networks. Is there a pattern how to  generate the neural network? Should it grow on its own? What type of neural network do we need?
 
