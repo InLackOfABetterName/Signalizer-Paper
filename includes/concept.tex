@@ -50,9 +50,60 @@ With this architecture it should be possible to experiment with different traffi
 \section{Prediction Network}
 \label{predictionNetwork}
 
-=== Maybe a perceptron is enough for the prediction? ===
+The prediction network will predict where cars will go in the network. Simplicity will be the design goal with the prediction network. This is based on the fact that the amount of training data rises fast, the more complex a artificial neural network architecture gets. The traffic light control system should give reliably good results and complex artificial neural network can introduce hurdles for the setup of a system, if huge amounts of training data is needed to get passable results. 
 
-We tried the prediction network with an input for the amount of cars that want to pass, but this did introduce unnecessary complexity and the accuracy of the network went down
+There are two general options on building the prediction network. The first one being to use only one artificial neural network that gets fed the current state of the road network and puts out the state for the next time step. The other option is to use one artificial neural network for every decision point in the road network where vehicles can chose between different road to drive down.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=16cm]{figures/predictionNetworkAlt1}
+  \caption[Prediction Network General Architecture Alternative 1]{Prediction Network General Architecture Alternative 1 \protect\footnotemark}
+  \label{predictionNetworkAlt1}
+\end{figure}
+
+\footnotetext{own illustration}
+
+Figure \ref{predictionNetworkAlt1} shows the first alternative for the prediction network architecture. In this example there is a road network with four road crossings (C1, C2, C3, C4). The parallel lines that are close together show the two lanes of each road. 
+
+As said earlier the first possibility to design the prediction network is to feed the state of the road network through a neural network that maps the whole road network every time step. This means in the state of the road network is defined as a collection of the amount of cars that currently are on each road segment. A road segment would be from a point where multiple roads cross or an endpoint to a point where multiple roads cross or an endpoint. The prediction network would then be fed this current state and put out the state that is valid for the next period of time. This could be a second, ten second or anything that was defined before the training data was collected.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=16cm]{figures/predictionNetworkAlt2}
+  \caption[Prediction Network General Architecture Alternative 2]{Prediction Network General Architecture Alternative 2 \protect\footnotemark}
+  \label{predictionNetworkAlt2}
+\end{figure}
+
+\footnotetext{own illustration}
+
+Figure \ref{predictionNetworkAlt2} shows the second option for the prediction network architecture. This example uses the same road network as the first, but instead of having one artificial neural network that maps the whole state of the road network, there are neural networks for every decision point in the road network instead. This means for every point in the road where a vehicle can drive down multiple ways an artificial neural network is placed.
+
+These networks get as input the current time in a previously defined granularity. This can range from one input node for the day of the week and one for the hour of the day to seconds. The rest of the prediction will take place in the traffic tracker with this option, so the prediction network is only needed when a vehicle approaches a decision point.
+
+These two architectures both have advantages and disadvantages that are now detailed to, at the end, chose one alternative that fits the problem of a simple and reliable prediction network better.
+
+The advantage of the first alternative is that it can discover correlations between all road crossings. It would be possible that when there is some amount of vehicles at crossing C1 that this has an impact on the routes of the vehicles crossing C4. This correlation could not be discovered by the second option, but comes at the cost of an exponential growth of interconnections between neurons in the network over the complexity of the road network, which will require lots of training data to learn the network. This would slow down the launch of such an architecture in the real world significantly, because a lot of data would have to be collected. With the second alternative the amount of interconnections between neurons only grows linear.
+
+A disadvantage of the first alternative is that it could even be impossible to run the traffic light control system without huge data sets, because the artificial neural network would have to learn the structure of the road network. If the neural networks are only attached to each decision point they only have to learn the correlation between time and the amount of cars that drive down each way. They do not have to learn the structure of the road network.
+
+This leads into the advantage of the second alternative that it uses the traffic tracker to do most of the prediction, meaning the traffic tracker will simulate the vehicles driving from decision point to decision point and only then the prediction network will be used to determine where they drive further.
+
+Another advantage of the second alternative is its extensibility. When the artificial neural networks were learned for a part of a road network, they can be reused, if the traffic light control system wants to be used on bigger part of the road network. This is because the decision points are independent of each other. This is not possible with the first alternative, because there all neurons of all segments are interconnected and existing weights may be entirely wrong with new interconnections.
+
+The focus for the prediction network is on simplicity and reliability. This is more represented by the second alternative, because it will require less training data and is less complex in big road networks. Thus, it is chosen as the concept for the prediction network. The exact implementation of which input and output values and what learning rule and artificial neural network type to chose will be tested and documented in the next chapter, but a class diagram for the prediction network can be seen in figure \ref{predictionNetwork}.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=16cm]{figures/predictionNetwork}
+  \caption[Class Diagram Prediction Network]{Class Diagram Prediction Network \protect\footnotemark}
+  \label{predictionNetwork}
+\end{figure}
+
+\footnotetext{own illustration}
+
+The prediction network will mainly contain a map of decision points to their neural networks. There are two methods. One to get a prediction for a link that leads into a decision point. The second argument of this method is the list of input parameters for the artificial neural networks, like the time of the day. The result is the output of the neural network. The second function is to learn from data sets. Data sets are just sets of input and output values that the artificial neural network learns from.
+
+The neural network has a list of layers, the first being the input layer and the last being the output layer and a learning rule. Similar to the prediction network, the neural network has a function to predict from a list of input values and a function to learn.
 
 \section{Traffic Tracker}
 \label{trafficTracker}
