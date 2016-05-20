@@ -45,10 +45,33 @@ With this architecture it should be possible to experiment with different traffi
 \section{Traffic Light Controller}
 \label{trafficLightController}
 
+This component is the executive part of the architecture. It assembles the information gathered in the traffic network into a traffic signal switching plans. Every street intersection, small or big, has its own controller instance managing just this intersection. One specific controller represents one specific switching strategy. The switching strategy can be decided on a per-intersection basis. This way a street network can be setup with differently controlled intersections in order to test mixed networks.
+
+All controllers have a Traffic Network Controller as their parent, which can act as a communication bus between traffic light controllers. The network controller is also a lower-level integration into the simulation software and can capture generic events and direct them to effected local controllers, as it is the instance in the system that knows all intersection controllers.
+
+A signal controller, or local controller, manages the intersections signals in a signal system, which holds the signals themselves as well as the signal groups including the mappings from groups to signals and signal to group.
+
+This results in the entity relationships shown in \autoref{sig_ctrl_relations}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=13cm]{figures/signal_light_controller}
+	\caption{Entity relationships inside the Traffic Light Controller}
+	\label{sig_ctrl_relations}
+\end{figure}
+
+- stress
+
+- backpressure
+
+
 == stress calculation ==
+- Stress level. Is there already something like the stress level algorithm. Growth of stress level. Can set up a algorithm that builds the perfect stress level for certain inputs? On what level do we have to set up the stress level calculation? Maybe whole streets? What parameters go into the algorithm? Limits for stress levels for the switching of the lights. Can we stick to the idea of green waves with our stress level algorithm? Can we explicitly make green waves? Is our algorithm better than a static signal wiring, if we just calculate it with perfect predictions? How much worse does it get if the predictions are off? Can we make the algorithm even better after we did the calculation examples. Idea: We should probably split off our stress level calculator to be able to monitor other signal wirings. I think the stress level growth algorithm really has to be more or less perfect. It is our metric to determine later if our prototype is better than existing solutions. Maybe compare signal wirings that we know are better and worse with the stress level algorithm and show empirically that our algorithm is good. Does the stress level approach have disadvantages? Are there other metrics? Maybe this and the neural networks stuff have to be separate chapters? This would also make the titling of the chapters less generic, which I think is good and the work could be split up effectively. Maybe the system deciding on the signals that should be changed can not even find the optimal solution in reasonable time. The system is split up in two phases one that calculates stress levels and one that the signals. Maybe the calculation of the stress levels should even work with events in the end. When a traffic light switches from red to green it sends events to the next node and then the new stress level calculation for the traffic light is executed. This is too detailed for this chapter, but I think the idea is good.
 
 \section{Prediction Network}
 \label{predictionNetwork}
+
+- Neural networks. Is there a pattern how to  generate the neural network? Should it grow on its own? What type of neural network do we need?
 
 The prediction network will predict where cars will go in the network. Simplicity will be the design goal with the prediction network. This is based on the fact that the amount of training data rises fast, the more complex a artificial neural network architecture gets. The traffic light control system should give reliably good results and complex artificial neural network can introduce hurdles for the setup of a system, if huge amounts of training data is needed to get passable results. 
 
