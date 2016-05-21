@@ -18,6 +18,7 @@ Different countries have different laws and guidelines that control how traffic 
 In Germany for example there is the ''Richtlinien für Lichtsignalanlagen`` (in english Guidelines for Light Signal Systems), short RiLSA. Relevant points are guidelines for the length of the signal phases and proposals on how to structure model driven control systems. Model driven control systems use a model of the worlds (usually the street network) and use that to plan their switching schedule.
 
 \section{Commuter stress}
+\label{commuter_stress}
 
 Commuting to work is generally not a great activity, especially when the trip tends to be longer. Unexpected events and delays are usually stressful. Driver stress strongly correlates with time urgency as shown by the research in \cite{aggressive_behaviour}. Waiting in front of red lights might not necessarily be unexpected, but it is still stressful. Junctions blocked by a heavily congested road will finally lead to nobody being able to move, whether the light show green or not, which is very frustrating.
 
@@ -48,6 +49,8 @@ Over-road sensors are mounted somewhere over the street. Usual mounting points a
 \end{figure}
 
 Given the sensors are in place and generate electrical signals for passing vehicles, these signals need to be collected somewhere. In simple systems, these sensors feed right back into local signal system. More advanced systems will collect the vehicle counts and other information in a central data center. Depending on the sensors the transmission is handled by the sensor itself or through additional devices. Modern sensors are directly connected to the Internet using the wireless broadband networks very common and reliable in cities. An example setup at an crossing can be seen in \autoref{overroad-sensor}.
+
+TODO table of common traffic sensors and a few properties
 
 \section{Artificial Neural Networks}
 

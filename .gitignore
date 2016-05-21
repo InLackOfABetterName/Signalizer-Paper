@@ -98,3 +98,7 @@ Thumbs.db
 # Lyx
 *.lyx
 
+
+*.gz
+*.dat
+*.script
