@@ -32,7 +32,9 @@ MATSim has no built in traffic sensors or traffic lights, but like for the visua
   	\centering
   	\begin{tabular}{l|l|l|l}
 		 & CityTrafficSimulator & MATSim & CORSIM \\[10pt]
+		 \hline\hline
 		Requirement & & & \\[10pt]
+		\hline
 		R1 & yes & yes & yes \\[10pt]
 		R2 & no & possible & no \\[10pt]
 		R3 & yes & possible & yes \\[10pt]
@@ -44,10 +46,11 @@ MATSim has no built in traffic sensors or traffic lights, but like for the visua
 		R9 & yes & possible & yes \\[10pt]
 		R10 & no & no & no \\[10pt]
 		Other & & & \\[10pt]
+		\hline
 		Open Source & yes & yes & no \\[10pt]
 		Prog. Language & C\# & Java & C++, FORTRAN, ... \\[10pt]
 	\end{tabular}
-  	\caption{Traffic Simulation Software Requirements}
+  	\caption{Traffic Simulation Software Requirement Fulfillment}
   	\label{simulationRequirementsComparison}
 \end{table}
 
@@ -57,12 +60,18 @@ MATSim was chosen as the simulation for the traffic light control system. As can
 
 \subsection*{Dependency Injection}
 
-TODO complete this
+The MATSim software is currently in the migration phase of switching from manual (compile-time) dependency to runtime dependency injection using the Guice Framework developed by Google. Extensions can be developed as a separate dependency injection module for Guice providing additional class bindings. This is what has been done for this project as well. The project is linked against the required matsim modules and provides a new module that installs all interfaces and implementations into the injector. The module takes parameters for default bindings which can be supplied manually, if the project is used as a library, or automatically from command line parameters.
+
+Due to problems with the dependency injection module of OTFVis, the visualization component, probably caused by an incomplete migration, it was necessary to completely recreate parts of the component's initialization code in order to be able to start the visualization.
 
 \section{Scenario generation}
 \label{scenario_generation}
 
-TODO complete this
+\subsection*{The Network}
+
+\subsection*{The Population}
+
+\subsection*{The Signals and Signal Groups}
 
 \section{Neural Network Library}
 

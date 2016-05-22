@@ -1,7 +1,5 @@
 This chapter will give an insight into the problems involved with traffic light control systems, what different solutions exist and how the problems are solved there. Based on this information the requirements for the new solution will be established.
 
-=== am ende quasi requirements (ist, soll)===
-
 Traffic light control systems have basically three main problems to solve:
 
 \begin{enumerate}
@@ -27,9 +25,27 @@ Traffic lights can be controlled in one of two ways at the highest level: Static
 
 \paragraph{Static} Statically controlled traffic lights use predefined switching plans that are usually planned by a city's traffic management. In order to develop these switching plans, a lot of research has to be conducted about the expected traffic flow, including manually counting cars are installing traffic sensors. Early traffic lights have been build with their switch timings integrated into the control electronics, so the plans developed for the intersections have to be as good as possible as they cannot be changed easily. More modern static traffic control systems can be reprogrammed if necessary which can often be observed, when construction work is ongoing on a link adjacent to an intersection.
 
-\paragraph{Adaptive} Adaptively controlled traffic lights are able to dynamically adapt (hence the name) to changing traffic flow. Some systems still relay on a set of static plans to choose from (for example the SCATS, Sydney Coordinated Adaptive Traffic System), while others produce their own timing plans. These adaptive systems all depend heavily on automatic traffic sensors, some require them at every line of an intersection (for example the SCOOT, Split Cycle Offset Optimisation Technique, system). The cost of the system and the required sensor coverage is one of the reasons, adaptive control systems are still not very widely adopted. The systems often work in cycles (rounds of signal phases) and optimize the cycle time and the split (which phase gets how much time). \cite{atcs_overview}.
+\paragraph{Adaptive} Adaptively controlled traffic lights are able to dynamically adapt (hence the name) to changing traffic flow. Some systems still relay on a set of static plans to choose from (for example the SCATS, Sydney Coordinated Adaptive Traffic System), while others produce their own timing plans. These adaptive systems all depend heavily on automatic traffic sensors, some require them at every line of an intersection (for example the SCOOT, Split Cycle Offset Optimisation Technique, system). The cost of the system and the required sensor coverage is one of the reasons, adaptive control systems are still not very widely adopted. The systems often work in cycles (rounds of signal phases) and optimize the cycle time and the split (which phase gets how much time). \autoref{atcs_overview} gives an overview over a few common commercial systems. \cite{atcs_overview}
 
-TODO übersichtstabelle traffic light control systems
+\begin{table}[ht!]
+	\centering
+	\begin{longtabu}{l|cl|p{9cm}}
+		\rowfont{\bfseries}
+		Name & Year & Country & Features and Methodologies \\
+		\hline\hline
+		SCOOT & 1970 & UK & Optimizes Splits, Cycle and Offsets; real-time optimization of signal timing \\
+		\hline
+		SCATS & 1970 & Australia & Optimizes Splits, Cycle and Offsets; selects from a library of stored signal timing plans \\
+		\hline
+		OPAC & 1990 & USA & The network is divided into independent sub-networks \\
+		\hline
+		RHODES & 1990 & USA & Mainly for diamond interchange locations \\
+		\hline
+		ACS Lite & 1990 & USA & Operates with predetermined coordinated timing plans; automatically adjust splits and offsets accordingly \\
+	\end{longtabu}
+	\label{atcs_overview}
+	\caption{Overview of commerical adaptive traffic control systems}
+\end{table}
 
 A problem that both static and adaptive control systems very often under heavy congestion have, is that already congested lanes are signaled green, even though no car can actually drive. In this situation the control system should skip the already congested lanes and distribute the time to other links. This may not reduce the overall congestion on the already congested road, but it will reduce the chance of vehicles standing inside the intersection and improves the latency for the free lanes.
 
