@@ -1,17 +1,3 @@
-- German guidelines for traffic signals (Richtlinien für Lichtsignalanlagen (RiLSA))
-
-- Different traffic light sensors (accuracy, features, can they measure the number of vehicles?, how is the data accessible?, how widely used are ones that are accessible over the internet currently?)
-
-- Neural networks, but details on that have to be read up first (The general idea must be explained in the introduction really well. Why did we choose neural networks?)
-
-- Maybe some statistical data analysis method for defining the optimal stress levels to switch signals and stress level growth?
-
-- Open Street Maps (what data can they carry? can we use them for our endeavor?)
-
--> Should we introduce all these topics when they are important? Maybe have just some basic stuff here like german guidelines, traffic light sensors and neural networks? The choice of Open Street Maps may need to be explained in more detail.
-
-\newpage
-
 \section{Traffic signal guidelines}
 
 Different countries have different laws and guidelines that control how traffic signals are built and also how they are controlled.
@@ -20,10 +6,12 @@ In Germany for example there is the ''Richtlinien für Lichtsignalanlagen`` (in 
 \section{Commuter stress}
 \label{commuter_stress}
 
-Commuting to work is generally not a great activity, especially when the trip tends to be longer. Unexpected events and delays are usually stressful. Driver stress strongly correlates with time urgency as shown by the research in \cite{aggressive_behaviour}. Waiting in front of red lights might not necessarily be unexpected, but it is still stressful. Junctions blocked by a heavily congested road will finally lead to nobody being able to move, whether the light show green or not, which is very frustrating.
+Commuting to work is generally not a great activity, especially when the trip tends to be longer. Unexpected events and delays are usually stressful. Driver stress strongly correlates with time urgency as shown by the research in \cite{aggressive_behaviour}. Waiting in front of red lights might not necessarily be unexpected, but it is still stressful when the clock is ticking in your mind. Junctions blocked by a heavily congested road will finally lead to nobody being able to move, whether the light show green or not, which is very frustrating.
 
 \section{Traffic sensors}
 \label{trafficSensors}
+
+TODO Different traffic light sensors (accuracy, features, can they measure the number of vehicles?, how is the data accessible?, how widely used are ones that are accessible over the internet currently?)
 
 Central for signal scheduling are statistics about the traffic flowing through the junctions. A common statistic that is usually collected: The number of cars that pass by in a certain time frame. This statistic is so simple to collect, that it is still relatively often done manually by people.
 
@@ -37,7 +25,6 @@ In urban areas however this is becoming unpopular as automatic sensors are becom
 \end{figure}
 
 In-pavement sensors are directly embedded into the street. Common examples for these are the well known inductive loop (see \autoref{induction-loop}), pneumatic road tubes and piezo-electric sensors. Inductive loops measure the inductance in their electric loop, piezo-electric sensors and pneumatic tubes measure the pressure applied on the road, to detect cars. Depending on the implementation, these sensors can not only detect a vehicle, but also classify vehicles based on weight or size. The speed of passing vehicles can usually not be detected directly, but by combining multiple of these simple sensors, is is possible to estimate the speed of the vehicles.
-
 
 \begin{table}[hb!]
 	\centering
@@ -56,6 +43,7 @@ In-pavement sensors are directly embedded into the street. Common examples for t
 	\caption{Overview of traffic sensors}
 	\label{sensor_overview}
 \end{table}
+
 The main advantage of these sensors is the cost and the simple installation. The obvious downside of in-pavement sensors is the fact that damages in the pavement will lead to damages in the sensors.
 
 Over-road sensors are mounted somewhere over the street. Usual mounting points are existing traffic signs and traffic lights. The technologies used for these sensors vary in a wide range: Infrared, radar, laser, optical cameras, sound and more. They differ in precision and use-cases. Most of them can measure not just the passage of vehicles, but also speed, vehicle class, license plates and more. These sensors do not suffer from the problems with in-pavement sensors, but have a new set of problems. Sensors that work optically are often affected by bad weather conditions that introduce to much noise in the picture. The main advantage of these sensors is the amount of additional information that can be collected and fast deployment.
@@ -71,7 +59,13 @@ Over-road sensors are mounted somewhere over the street. Usual mounting points a
 
 Given the sensors are in place and generate electrical signals for passing vehicles, these signals need to be collected somewhere. In simple systems, these sensors feed right back into local signal system. More advanced systems will collect the vehicle counts and other information in a central data center. Depending on the sensors the transmission is handled by the sensor itself or through additional devices. Modern sensors are directly connected to the Internet using the wireless broadband networks very common and reliable in cities. An example setup at an crossing can be seen in \autoref{overroad-sensor}.
 
+\section{Open Street Maps}
+
+Open Street Maps (what data can they carry? can we use them for our endeavor?)
+
 \section{Artificial Neural Networks}
+
+TODO Neural networks, but details on that have to be read up first (The general idea must be explained in the introduction really well. Why did we choose neural networks?)
 
 Artificial neural networks (ANNs) is an important field in machine learning and cognitive science. There are many different kinds of ANNs, but all have in common that they are inspired by biological neural networks, like the human brain. The big advantage of neural networks over algorithms that were explicitly developed for a task is that neural networks can learn behavior like classification from a set of example data and do not have to explicitly modeled. For this the neural network is modeled and the input and output vectors are defined. Then a set of example data i fed through the neural network and a learning algorithm tries to find a configuration of the neural network to get the desired outputs for the respective inputs. The ANNs form their own understanding of the problem while learning.
 

@@ -65,6 +65,7 @@ From now on the term ''signal controller`` will refer to the intersection local 
 Even though the individual lanes and their sensor data will be used as input, switching is done on a signal group level. Signal groups will always be switched as one unit and as such, decisions are made not on a signal level, but considering all signals of a group.
 
 \subsection*{Grouping signals}
+\label{signal_group_concept}
 
 In order to do signal switching on a group basis, the groups must be defined first. A simple yet effective approach to defining the signal groups of an intersection is to manually inspect the intersection and define the groups by hand. This allows very specific grouping rules and easy special casing where needed or beneficial. With only a few intersections (for example in a small town) this is an acceptable solution.
 
@@ -237,8 +238,9 @@ After the architecture was now constructed the requirements for the traffic simu
 
 \begin{table}[!ht]
   	\centering
-  	\begin{tabular}{lll}
-		Requirement Number & Requirement Name & Priority \\[10pt]
+  	\begin{longtabu}{lp{9cm}l}
+  		\rowfont{\bfseries}
+		ID & Requirement Name & Priority \\[10pt]
 		R1 & Simulation of car traffic & H \\[10pt]
 		R2 & Simulation of pedestrian traffic & L \\[10pt]
 		R3 & Visual display of the simulation & M \\[10pt]
@@ -249,7 +251,7 @@ After the architecture was now constructed the requirements for the traffic simu
 		R8 & Dynamic control of traffic lights & H \\[10pt]
 		R9 & Visual road network designer & M \\[10pt]
 		R10 & Real world data for the simulation & M \\[10pt]
-	\end{tabular}
+	\end{longtabu}
   	\caption{Traffic Simulation Software Requirements}
   	\label{simulationRequirements}
 \end{table}
