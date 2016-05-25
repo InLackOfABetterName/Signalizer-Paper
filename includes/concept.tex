@@ -47,7 +47,7 @@ With this architecture it should be possible to experiment with different traffi
 
 This component is the executive part of the architecture. It assembles the information gathered in the traffic network into traffic signal switching plans. Every street intersection, small or big, has its own controller instance managing just this intersection. One specific controller represents one specific switching strategy. The switching strategy can be decided on a per-intersection basis. This way a street network can be setup with differently controlled intersections in order to test mixed networks.
 
-All controllers have a Traffic Network Controller as their parent, which can act as a communication bus between traffic light controllers. The network controller is also a lower-level (from the perspective of a per-intersection controller) integration into the simulation software and can capture generic events and direct them to affected local controllers, as it is the instance in the system that knows all intersection controllers.
+All controllers have a Traffic Network Controller as their parent, which can act as a communication bus between traffic light controllers. The network controller is also a lower-level integration, from the perspective of a per-intersection controller, into the simulation software. It can capture generic events and direct them to affected local controllers, as it is the instance in the system that knows all intersection controllers.
 
 A signal controller, or local controller, manages the intersections signals in a signal system, which holds the signals themselves as well as the signal groups including the mappings from groups to signals and signal to group.
 
@@ -110,8 +110,7 @@ In order to use a priority queue, there must be a measure of priority. The measu
 
 As such we can define a stress function for an individual signal as follows: $s(n, t): \mathbb{R}^2 \mapsto \mathbb{R}$ with $n$ being the number of cars waiting at a signal and $t$ being the since the signal was last in the green state. The overall stress of a signal group is than calculated with $S(n, t)$ as seen in \autoref{group_stress}. $N$ is the number of signals in the group and $s\left(n_i, t_i\right)$ is the stress of the current signal. The main goal is, that the stress of a signal with a few vehicles waiting for a long time will eventually surpass the stress of a signal with a lot of vehicles waiting for a shorter time. 
 
-\begin{equation}
-	\label{group_stress}
+\begin{equation} \label{group_stress}
 	S(n, t) = \sum_{i}^{N}{s\left(n_i, t_i\right)}
 \end{equation}
 
