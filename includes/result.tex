@@ -1,7 +1,7 @@
 This chapter will go into the results of the simulation and the validation of the success of the chosen approach. Two metrics have been chosen to analyze:
 
 \begin{enumerate}
-	\item The duration of of the simulation in seconds from the first agents being spawned until the last agent arrives at his target.
+	\item The duration of the simulation in seconds from the first agents being spawned until the last agent arrives at his target.
 	\item The the number of active agents in the network measured at a fixed time interval (5 minutes).
 \end{enumerate}
 
@@ -45,6 +45,8 @@ The following four functions ($\mathbb{R}^2 \mapsto \mathbb{R}$) have been selec
 \end{enumerate}
 
 The functions $f$ and $g$ where added as a comparison due to their simplicity and balanced influence of car count and the red time. The function $i$ has been added as a variant that does not include the time aspect to verify the statement mentioned in \autoref{stress_prio} about the importance of it. The constant weights for the car count and red time (functions $f$ and $g$) have been chosen as $w_n = 1$ and $w_t = 1.1$ for the following test, to give a slightly bigger influence to the red time. The constant $c$ (function $h$) has been chosen as $c = 0.1$ to allow stress growth even when the car count is zero, only based on the time.
+
+The phase duration has been calculated with ten seconds per waiting vehicles with a minimum of ten seconds and a maximum of 100 seconds.
 
 \begin{figure}
 \centering	
@@ -108,9 +110,9 @@ In a perfect world without prediction errors, all functions perform comparably w
 	\caption{Agents living per time unit without previous learning.}
 \end{figure}
 
-The second metric, the number of active/living simulation agents over time, show not only how long the simulation was running, but also how well the network was keeping up with the demand. All four functions and the cycle-base controller as a reference, have each been graphed without training the network, with a trained network and finally in the perfect world.
+The second metric, the number of active/living simulation agents over time, show not only how long the simulation was running, but also how well the network was keeping up with the demand. All four functions and the cycle-base controller as a reference, have each been graphed without training the network, with a trained network and finally with 100\% accurate predictions.
 
-In \autoref{agent_statistic_dumb} the graphs for the test with the untrained network can be seen. The graph of the function $i$ (green line) clearly shows how bad this function performs when the the predictions are wrong. The graphs all peek at 60,000 seconds (about 16,5 hours) when the last agent gets spawned. That is also the time, when the traffic jams are the biggest, the largest being at the central intersecting on the main street and and where the highway enters the main street. The other stress functions perform similar to the cycle based controller with a similarly high peek around 5,000 agents, however the number of agents decreases more quickly. The $i$ function however keeps almost the entire population inside the network and only loses less than 2000 agents until it peeks and then stays stable.
+In \autoref{agent_statistic_dumb} the graphs for the test with the untrained network can be seen. The graph of the function $i$ (green line) clearly shows how bad this function performs when the predictions are wrong. The graphs all peek at 60,000 seconds (about 16.5 hours) when the last agent gets spawned. That is also the time, when the traffic jams are the biggest, the largest being at the central intersecting on the main street and where the highway enters the main street. The other stress functions perform similar to the cycle based controller with a similarly high peek around 5,000 agents, however the number of agents decreases more quickly. The $i$ function however keeps almost the entire population inside the network and only loses less than 2000 agents until it peeks and then stays stable.
 
 \begin{figure}[ht!]
 	\centering
@@ -137,7 +139,7 @@ In \autoref{agent_statistic_dumb} the graphs for the test with the untrained net
 
 The second diagram, \autoref{agent_statistic_learned}, more clearly shows the improvement when training the prediction network. Function $i$ peaks at about 8,000 agents, then loses a few hundred agents before becoming stable again. While the problem is still there, an improvement is already visible. A real improvement can be seen with function $h$, as it peaks at only about 3000 agents and only after another 17 to 18 hours all agents are gone. That is a good improvement and almost 50\% better than the cycle-based controller both in simulation duration and peak agent count. Functions $f$ and $g$ performed both about the same as without any training.
 
-Finally in the perfect world the results are, which is to be expected, much better. The functions $f$ and $g$ have the highest peak in this scenario with still over 2,000 agents at the same time on the streets, $h$ is only slightly better. The $i$ function's graph is interesting, because there is almost no buildup of agents in the network and it peaks below 1,000 agents which are gone just about an hour later.
+Finally under optimal conditions the results are, which is to be expected, much better. The functions $f$ and $g$ have the highest peak in this scenario with still over 2,000 agents at the same time on the streets, $h$ is only slightly better. The $i$ function's graph is interesting, because there is almost no buildup of agents in the network and it peaks below 1,000 agents which are gone just about an hour later.
 
 The last to diagrams show that with good predicts, less weight on the time aspects yields better results. No time aspect however will lead to problems in the real world. 
 
