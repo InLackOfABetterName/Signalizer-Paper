@@ -75,7 +75,7 @@ However as one of the goals of the project is to reduce manual input and the res
 	\centering
 	\includegraphics[width=6cm]{figures/intersecting_green}
 	\label{intersecting_green}
-	\caption{Intersection pattern with intersection green lanes (marked red and bold).}
+	\caption{Intersection pattern with intersecting green lanes (marked red).}
 \end{figure}
 
 \autoref{intersecting_green} shows a pattern that is common in German cities where the traffic to the opposing street is infrequent.
@@ -104,6 +104,7 @@ Building and filtering a power set is exponential ($\mathcal{O}(2^n)$) both in r
 Further details of the algorithm and implementation specialties a further described in \autoref{scenario_generation}.
 
 \subsection*{Priority}
+\label{stress_prio}
 
 In order to use a priority queue, there must be a measure of priority. The measure proposed for this is called a stress function referring to commuter stress (see \autoref{commuter_stress}). The idea is simple: Waiting for a long time in front of a red traffic light causes increasing amounts of stress and waiting in a very long queue is worse than waiting as the first vehicle in line.
 
@@ -114,7 +115,7 @@ As such we can define a stress function for an individual signal as follows: $s(
 	S(n, t) = \sum_{i}^{N}{s\left(n_i, t_i\right)}
 \end{equation}
 
-Including the wait time in the function is quite important. A naive approach could just use a the number of vehicles in front of the signals, but this can lead to starvation problems (certain lanes not getting any time at all), if two signal groups receive a lot of new vehicles in a short time while other groups only receive a small number of vehicles. In these cases the signal controller would oscillate between the two high input groups and completely ignore other groups until the input of these active groups decreases, which can take hours during a common ''rush hour`` on main streets.
+Including the wait/red time in the function is quite important. A naive approach could just use a the number of vehicles in front of the signals, but this can lead to starvation problems (certain lanes not getting any time at all), if two signal groups receive a lot of new vehicles in a short time while other groups only receive a small number of vehicles. In these cases the signal controller would oscillate between the two high input groups and completely ignore other groups until the input of these active groups decreases, which can take hours during a common ''rush hour`` on main streets.
 
 A proposed definition for $s(n, t) $ is shown in \autoref{proposed_stress}. The value for $c$ can be is constant and should be freely chosen from $\mathbb{R}$ to guarantee a certain stress buildup per time unit even if no cars are detected at the signal. A visualization of this function can be seen in \autoref{stress_func_plot} with two values for $c$.
 
@@ -127,12 +128,17 @@ The number of cars has a quadratic influence while the time has a linear influen
 \begin{figure}[h!]
 	\centering
 	\begin{tikzpicture}
-	\begin{axis}
+	\begin{axis}[
+		zmin=0,
+		xlabel={Time},
+		ylabel={Vehicle count},
+		zlabel={Stress}
+	]
 	\addplot3[surf, samples=15, domain=0:150]{
-		(y + x) * (x + 0.1)
+		(x + y) * (x + 0.1)
 	};
 	\addplot3[mesh, samples=15, domain=0:150]{
-		(y + x) * (x + 100)
+		(x + y) * (x + 100)
 	};
 	\end{axis}
 	\end{tikzpicture}

@@ -1,21 +1,21 @@
 \section{Traffic signal guidelines}
 
 Different countries have different laws and guidelines that control how traffic signals are built and also how they are controlled.
-In Germany for example there is the ''Richtlinien für Lichtsignalanlagen`` (in english Guidelines for Light Signal Systems), short RiLSA. Relevant points are guidelines for the length of the signal phases and proposals on how to structure model driven control systems. Model driven control systems use a model of the worlds (usually the street network) and use that to plan their switching schedule.
+In Germany for example there is the ''Richtlinien für Lichtsignalanlagen`` (in english Guidelines for Light Signal Systems), short RiLSA. Relevant points are guidelines for the length of the signal phases and proposals on how to structure model driven control systems. These use a model of the world (usually the street network) and use that to plan their switching schedule. The model is then continuously reevaluated to improve or change the schedule.
 
 \section{Commuter stress}
 \label{commuter_stress}
 
-Commuting to work is generally not a great activity, especially when the trip tends to be longer. Unexpected events and delays are usually stressful. Driver stress strongly correlates with time urgency as shown by the research in \cite{aggressive_behaviour}. Waiting in front of red lights might not necessarily be unexpected, but it is still stressful when the clock is ticking in your mind. Junctions blocked by a heavily congested road will finally lead to nobody being able to move, whether the light show green or not, which is very frustrating.
+Commuting to work is generally not a great activity, especially when the trip tends to be longer. Unexpected events and delays are usually stressful. Driver stress strongly correlates with time urgency as shown by the research in \cite{aggressive_behaviour}. Waiting in front of red lights might not necessarily be unexpected, but it is still stressful when the clock is ticking in your mind. In these situations stressed drivers are tempted to ignore the red signal and drive anyway, risking a severe accident. Junctions blocked by a heavily congested road will finally lead to nobody being able to move, whether the lights show green or not, which is very frustrating.
 
 \section{Traffic sensors}
 \label{trafficSensors}
 
 TODO Different traffic light sensors (accuracy, features, can they measure the number of vehicles?, how is the data accessible?, how widely used are ones that are accessible over the internet currently?)
 
-Central for signal scheduling are statistics about the traffic flowing through the junctions. A common statistic that is usually collected: The number of cars that pass by in a certain time frame. This statistic is so simple to collect, that it is still relatively often done manually by people.
+Central to signal scheduling are statistics about the traffic flowing through the junctions. A common statistic that is usually collected is the number of cars that pass by in a certain time frame, also called traffic count. This statistic is so simple to collect, that it is still often done manually by people.
 
-In urban areas however this is becoming unpopular as automatic sensors are becoming more common. There are quite a few different types of automatic traffic sensors with different properties. These sensors can generally be divided into two groups: In-pavement sensors and over-roadway sensors.
+In urban areas however, this is becoming unpopular as automatic sensors are increasingly common. There are quite a few different types of automatic traffic sensors with different properties. These sensors can generally be divided into two groups: In-pavement sensors and over-roadway sensors.
 
 \begin{figure}[ht]
 	\centering
@@ -44,9 +44,9 @@ In-pavement sensors are directly embedded into the street. Common examples for t
 	\label{sensor_overview}
 \end{table}
 
-The main advantage of these sensors is the cost and the simple installation. The obvious downside of in-pavement sensors is the fact that damages in the pavement will lead to damages in the sensors.
+The main advantage of these sensors is the cost and the simple installation. The obvious downside of in-pavement sensors is the fact that damaging the pavement will lead to damages to the sensors.
 
-Over-road sensors are mounted somewhere over the street. Usual mounting points are existing traffic signs and traffic lights. The technologies used for these sensors vary in a wide range: Infrared, radar, laser, optical cameras, sound and more. They differ in precision and use-cases. Most of them can measure not just the passage of vehicles, but also speed, vehicle class, license plates and more. These sensors do not suffer from the problems with in-pavement sensors, but have a new set of problems. Sensors that work optically are often affected by bad weather conditions that introduce to much noise in the picture. The main advantage of these sensors is the amount of additional information that can be collected and fast deployment.
+Over-road sensors are mounted somewhere over the street. Usual mounting points are existing traffic signs and traffic lights. The technologies used for these sensors vary in a wide range: Infrared, radar, laser, optical cameras, sound and more. They differ in precision and use-cases. Most of them can measure the passage of vehicles, velocity, vehicle class, license plates and more. These sensors do not suffer from the problems as in-pavement sensors, but have a new set of problems. Sensors that work optically are often affected by bad weather conditions that introduce to much noise in the picture. The main advantage of these sensors is the amount of additional information that can be collected and their fast deployment.
 
 \begin{figure}[ht]
 	\centering
@@ -57,7 +57,7 @@ Over-road sensors are mounted somewhere over the street. Usual mounting points a
 
 \autoref{sensor_overview} shows common sensors and a few relevant properties.
 
-Given the sensors are in place and generate electrical signals for passing vehicles, these signals need to be collected somewhere. In simple systems, these sensors feed right back into local signal system. More advanced systems will collect the vehicle counts and other information in a central data center. Depending on the sensors the transmission is handled by the sensor itself or through additional devices. Modern sensors are directly connected to the Internet using the wireless broadband networks very common and reliable in cities. An example setup at an crossing can be seen in \autoref{overroad-sensor}.
+Given the sensors are in place and generate electrical signals for passing vehicles, these signals need to be collected somewhere. In simple systems, these sensors feed right back into local signal system. More advanced systems will collect the vehicle counts and other information in a central data center. Depending on the sensors the transmission is handled by the sensor itself or through additional devices. Modern sensors are directly connected to the Internet using the wireless broadband networks, which are very common and reliable in cities. An example setup at an crossing can be seen in \autoref{overroad-sensor}.
 
 \section{Open Street Maps}
 

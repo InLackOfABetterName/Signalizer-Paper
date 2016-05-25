@@ -1,0 +1,30 @@
+Stress Based (unlearned):
+
+50:22:09 -> SumNLinTLin             181329
+39:22:40 -> SumNLinIntegTLinInteg   141760
+52:32:29 -> SumNQuadTLin            189149
+Failed   -> NLinFunction            0
+
+
+Stress Based (learned):
+
+51:30:00 -> SumNLinTLin             185400
+51:35:09 -> SumNLinIntegTLinInteg   185709
+36:56:36 -> SumNQuadTLin            132996
+Failed   -> NLinFunction            0
+
+
+Stress Based (all-knowing):
+
+22:07:05 -> SumNLinTLin             79625
+21:58:52 -> SumNLinIntegTLinInteg   79132
+20:35:27 -> SumNQuadTLin            74127
+17:50:49 -> NLinFunction            64249
+
+Cycle Based:
+ 10s -> 72:53:05                    262385
+ 30s -> 68:28:10                    246490
+ 60s -> 67:29:13                    242953
+120s -> 66:56:15                    240975
+180s -> 67:05:23                    241523
+240s -> 68:43:22                    247402
