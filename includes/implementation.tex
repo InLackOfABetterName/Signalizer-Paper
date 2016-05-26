@@ -2,7 +2,13 @@
 
 The basis for the implementation will be set by a traffic simulation software. The requirements for this software were defined in \ref{trafficSimulationRequirements}. Based on an internet research the three traffic simulators CityTrafficSimulator, MATSim and CORSIM were preselected and will now be compared with the ten requirements.
 
-...CityTrafficSimulator...
+CityTrafficSimulator is a traffic simulation software for small- to medium-sized traffic networks. It implements the intelligent driver model.\footcite{citation needed (traffic-simulation.de)} The simulation does not support pedestrian traffic, but this could theoretically be implemented by the user, because CityTrafficSimulator is open source.
+
+The simulation results are shown visually and can also be extracted with different metrics. It would also be easy to extend the visuals of the simulation and extract arbitrary data from the network, because as stated earlier the project is open source.
+
+CityTrafficSimulator has traffic lights built in, but it has no application programming interface for dynamic traffic light controllers, but as with the extraction of arbitrary data this could be implemented.
+
+A unique aspect of CityTrafficSimulator to the other two traffic simulations is its Signal Light Editor, which allows the user to model signal groups and signal times visually. MATSim for example has configuration files for this, which are harder to set up for quick testing.
 
 The second option for the traffic simulation is MATSim, an open source traffic simulation written in Java. It has built in support for car traffic simulation, but not for pedestrian traffic. However it is possible to extend MATSim with different locomotion types. There is for example a project that simulated airplane traffic over europe with MATSim.
 
@@ -23,7 +29,17 @@ MATSim has different events and data structures that allow to interface with the
 
 MATSim has no built in traffic sensors or traffic lights, but like for the visual output, for traffic lights there is an extension that also allows for the dynamic control of the traffic lights.
 
-...CORSIM...
+CORSIM is the only of the three traffic simulations, discussed here that is not open source. This limits the possibilities when using CORSIM. CORSIM is also able to simulate vehicle, but no pedestrian traffic. It has a real time visual representation of the traffic simulation.
+
+CORSIM has a built in traffic controller that uses static plans, but it is possible to use an own dynamic traffic light controller.
+
+For custom extensions CORSIM has Run-Time Extensions (RTE) with different CORSIM Call Points which allow the extension to hook into CORSIM during execution. Examples for Call Points would be ``Initialize'', which is called at the start of the simulation, or ``PreNetsimSignal'', called each time just before the signals in the road network are updated.\footcite{
+%http://sites.poli.usp.br/ptr/lemt/CORSIM/RTE%20Developers%20Guide.pdf
+}
+
+Run-Time Extensions can access data trough the CORSIM application programming interface and all the data structures used by CORSIM internally, allowing the user to extract arbitrary data.\footcite{
+%http://sites.poli.usp.br/ptr/lemt/CORSIM/RTE%20Developers%20Guide.pdf
+}
 
 %http://www.cszb.net/
 %https://github.com/Schulteatq/CityTrafficSimulator/tree/master/CityTrafficSimulator
@@ -36,7 +52,7 @@ MATSim has no built in traffic sensors or traffic lights, but like for the visua
 		Requirement & & & \\[10pt]
 		\hline
 		R1 & yes & yes & yes \\[10pt]
-		R2 & no & possible & no \\[10pt]
+		R2 & possible & possible & no \\[10pt]
 		R3 & yes & possible & yes \\[10pt]
 		R4 & possible & possible & no \\[10pt]
 		R5 & possible & yes & yes \\[10pt]
@@ -150,3 +166,9 @@ We tried the prediction network with an input for the amount of cars that want t
 learning rule
 
 artificial neural network type
+
+\section{Traffic Tracker Implementation}
+
+Problem with too many entities when infinitely splitting vehicles as they drive through decision points
+
+Adding and removing vehicles from a tracked link has to be done after the simulation in the traffic tracker
