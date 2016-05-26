@@ -169,8 +169,6 @@ If a signal has multiple outgoing lanes, simply the longest duration should be t
 \section{Prediction Network}
 \label{predictionNetwork}
 
-- Neural networks. Is there a pattern how to  generate the neural network? Should it grow on its own? What type of neural network do we need?
-
 The prediction network will predict where cars will go in the network. Simplicity will be the design goal with the prediction network. This is based on the fact that the amount of training data rises fast, the more complex a artificial neural network architecture gets. The traffic light control system should give reliably good results and complex artificial neural network can introduce hurdles for the setup of a system, if huge amounts of training data is needed to get passable results. 
 
 There are two general options on building the prediction network. The first one being to use only one artificial neural network that gets fed the current state of the road network and puts out the state for the next time step. The other option is to use one artificial neural network for every decision point in the road network where vehicles can chose between different road to drive down.
@@ -191,8 +189,8 @@ As said earlier the first possibility to design the prediction network is to fee
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=16cm]{figures/predictionNetworkAlt2}
-  \label{predictionNetworkAlt2}
   \caption[Prediction Network General Architecture Alternative 2]{Prediction Network General Architecture Alternative 2 \protect\footnotemark}
+  \label{predictionNetworkAlt2}
 \end{figure}
 
 \footnotetext{own illustration}
@@ -216,8 +214,8 @@ The focus for the prediction network is on simplicity and reliability. This is m
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=16cm]{figures/predictionNetwork}
-  \label{predictionNetwork}
   \caption[Class Diagram Prediction Network]{Class Diagram Prediction Network \protect\footnotemark}
+  \label{predictionNetwork}
 \end{figure}
 
 \footnotetext{own illustration}
@@ -229,14 +227,54 @@ The neural network has a list of layers, the first being the input layer and the
 \section{Traffic Tracker}
 \label{trafficTracker}
 
-analogy of error correction problem with neural networks
+The traffic tracker has two main tasks, simulating the traffic in the road network based of the predictions from the prediction network and correcting errors based of data from the traffic sensors. The primary design goal for the traffic tracker is its correctness when the prediction network is correct. A secondary goal would be to be able to add new traffic sensors easily.
 
-Error correction anomalies:
+The interface to the prediction network is already defined, but the interfaces to the traffic light controller and the traffic sensors is not. The traffic light controller has to have a way to retrieve how many vehicles are at a road segment, called link. Thus, the traffic tracker will have a function ``vehicleCountAt'' which takes an id of a link and returns the vehicle count at that link. The interface to the traffic sensors is more difficult, because it is not yet clear how the error correction will work and this is the main use of the traffic sensors. The interface to the traffic sensors will be defined later.
 
-- too many cars
-- not enough cars
-	- enough cars to get more probability
-	- not enough cars to get more probability
+The problem with traffic sensors is that they come in many different forms and produce very different information on which an error correction could take place. Induction loops may only be able to signal if a car is there or not, a camera might only be able to recognize up to 7 vehicles and other systems might have totally different restrictions. Thus, two general options to implement the error correction come up. One where the error correction takes place in the traffic tracker itself, called by events produced by the traffic sensors, and one where the traffic tracker calls the sensors to correct possible errors. 
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=16cm]{figures/predictionNetwork}
+  \caption[Traffic Tracker Sensor Interface]{Traffic Tracker Sensor Interface \protect\footnotemark}
+  \label{trafficTrackerSensorInterface}
+\end{figure}
+
+Figure \ref{trafficTrackerSensorInterface} shows the two options described in the previous paragraph. The first one would enable the traffic sensors to be really light weight. They would have to know nothing about the traffic tracker and implement almost no logic. New traffic sensors that would use the same error correction mechanisms as previous ones would be very easy to implement, but if a new traffic sensor with data that could not be used with the existing error correction mechanism would have to be connected to the traffic tracker, the traffic tracker would have to implement another mechanism for error correction. Users with their own traffic sensors would have to have their own implementation of the traffic tracker.
+
+The alternative where the traffic tracker calls the traffic sensors to correct errors would require more work to implement a traffic sensor, because every one would have to implement its own error correction and the traffic sensors would have to know at least the internal data format of the traffic tracker to correct it. However, traffic sensors would work with every implementation of the traffic tracker and the problem of every traffic sensor implementing its own error correction could be solved with abstract sensors that implement different error correction methods that are then inherited for a new traffic sensor.
+
+The traffic tracker will implement the second option, where the traffic tracker calls the sensors, because it is more extensible, mostly because the traffic tracker will not have to implement different error correction mechanisms. Secondly, it also is more flexible.
+
+To be able to return how many vehicles are at a link, the traffic tracker has to have an internal data model of links and vehicles. The traffic tracker will have many links that are interconnected and the links will have a queue of tracked vehicles that drive on the link and possibly wait at the end until the next link has enough free space or the traffic light turns green. ``TrackedLink'' and ``TrackedVehicle'' will be the two data objects that only contain some helper functions. The simulation, which will move the vehicles in the road network, will take place in the traffic tracker.
+
+If, in the traffic tracker simulation, a vehicle approaches a decision point with for example two roads where the vehicle can continue, there are two options how to resolve the decision. Either, a random number between 0 and 1 is generated and the route in which range the number lies is taken. When the prediction network would return an array $[0.3, 0.7]$, which resembles the probabilities, the vehicle drives down this certain route, and the random number would be $0.12$, the first route would be taken. Or, the vehicles have a probability attached to them and at each decision point the vehicle is split apart and each part gets at its probability the probability of the old vehicle times the probability of this route. With a vehicle with the probability $0.5$ and the returned array $[0.3, 0.7]$ of the prediction network, the new vehicles probabilities would be $0.15$ and $0.35$.
+
+The random number option is easier to implement and has fewer implications on the performance, but then the error correction becomes really hard. There are two types of errors that need to be corrected. Either there are more cars on the simulated tracked link than the traffic sensors detects or there are too few cars on the simulated tracked link. With too many cars, with the random number solution the car could be moved to another link that is a possible route, but the error is hard to find in the many routes the vehicle could have taken. With the probability option, every vehicle could remember all split clones of this vehicle and could remove itself from the link by evenly distributing its probability to the other parts of the vehicle.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=11cm]{figures/errorCorrectionProblem}
+  \caption[Traffic Tracker Error Correction]{Traffic Tracker Error Correction \protect\footnotemark}
+  \label{trafficTrackerErrorCorrection}
+\end{figure}
+
+Figure \ref{trafficTrackerErrorCorrection} shows the case that there are too few vehicles on a link. The first row describes the random number solution, where two vehicles enter the road crossing with a $70\%$ probability of driving up.(1) They may both drive upwards.(2) Then the induction loop at the road crossing C4 detects a vehicle standing there.(3) Even in this reduced example, with the random number solution it is not clear what vehicle of the two to move to C4. With more complex routes it could be possible that hundreds of vehicles could be moved there.
+
+The second row of figure \ref{trafficTrackerErrorCorrection} shows how two vehicles with $100\%$ probabilities drive up to the road crossing.(1) Both vehicles drive both ways and split up, but the two vehicles driving up now only have a probability of $70\%$ left.(2) When the induction loop now detects that there should be a vehicle (3), but there is only $0.6$ vehicles, it can correct the error by taking $20\%$ away from both vehicles driving up and adding it to the ones standing at C4.
+
+The second solution does not only make error correction easier, but also makes the result more correct and less error prone, because no random numbers are used anymore. Thus, the second option is chosen over the first.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=14cm]{figures/predictionNetworkAlt2}
+  \caption[Class Diagram Traffic Tracker]{Class Diagram Traffic Tracker \protect\footnotemark}
+  \label{trafficTracker}
+\end{figure}
+
+Figure \ref{trafficTracker} shows the complete class diagram of the traffic tracker, its interfaces to the connected components and its data model with tracked links and vehicles.
+
+Most of this was already explained in this section. The ``currentLinkEnteredTime'' is used to calculate when the vehicle reached the end of the link and is ready to go to the next link. The ``split'' function is a helper function to split up the vehicle at decision point with a list of probabilities for the new vehicles. It also maintains the ``clones'' list which contains all the vehicles that were at some point split of of this vehicle.
 
 \section{Traffic Simulation Requirements}
 \label{trafficSimulationRequirements}
