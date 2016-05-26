@@ -47,9 +47,9 @@ With this architecture it should be possible to experiment with different traffi
 
 This component is the executive part of the architecture. It assembles the information gathered in the traffic network into traffic signal switching plans. Every street intersection, small or big, has its own controller instance managing just this intersection. One specific controller represents one specific switching strategy. The switching strategy can be decided on a per-intersection basis. This way a street network can be setup with differently controlled intersections in order to test mixed networks.
 
-All controllers have a Traffic Network Controller as their parent, which can act as a communication bus between traffic light controllers. The network controller is also a lower-level (from the perspective of a per-intersection controller) integration into the simulation software and can capture generic events and direct them to affected local controllers, as it is the instance in the system that knows all intersection controllers.
+All controllers have a Traffic Network Controller as their parent, which can act as a communication bus between traffic light controllers. The network controller is also a lower-level integration, from the perspective of a per-intersection controller, into the simulation software. It can capture generic events and direct them to affected local controllers, as it is the instance in the system that knows all intersection controllers.
 
-A signal controller, or local controller, manages the intersections signals in a signal system, which holds the signals themselves as well as the signal groups including the mappings from groups to signals and signal to group.
+A signal controller, or local controller, manages the intersections signals in a system, which holds the signals themselves as well as the groups including the mappings from groups to signals and vice versa.
 
 This results in the entity relationships shown in \autoref{sig_ctrl_relations}
 
@@ -60,27 +60,27 @@ This results in the entity relationships shown in \autoref{sig_ctrl_relations}
 	\caption{Entity relationships inside the Traffic Light Controller}
 \end{figure}
 
-From now on the term ''signal controller`` will refer to the intersection local controllers. Its the responsibility of these controllers decide which lights to switch to green and for how long. In contrast to the commonly applied concepts of cycles and splits (as seen in \autoref{analysis}), these controllers will use a different approach. Instead of having a fixed cycle time separated into splits per phase, a priority queue like approach has been chosen to define the order of phases and a load based function is applied to decide the length of the given phase.
+From now on the term ''signal controller`` will refer to the intersection local controllers. Its the responsibility of these controllers to decide which lights to switch to green and for how long. In contrast to the commonly applied concepts of cycles and splits (as seen in \autoref{analysis}), these controllers will use a different approach. Instead of having a fixed cycle time separated into splits per phase, a priority queue like approach has been chosen to define the order of phases and a load based function is applied to decide the length of the given phase.
 
-Even though the individual lanes and their sensor data will be used as input, switching is done on a signal group level. Signal groups will always be switched as one unit and as such, decisions are made not on a signal level, but considering all signals of a group.
+Even though the individual lanes and their sensor data will be used as input, switching is done on a signal group level. Signal groups will always be switched as one unit and as such, decisions not are made on a signal level, but instead considering all signals of a group.
 
 \subsection*{Grouping signals}
 \label{signal_group_concept}
 
-In order to do signal switching on a group basis, the groups must be defined first. A simple yet effective approach to defining the signal groups of an intersection is to manually inspect the intersection and define the groups by hand. This allows very specific grouping rules and easy special casing where needed or beneficial. With only a few intersections (for example in a small town) this is an acceptable solution.
+In order to do signal switching on a group basis, the groups have to be defined first. A simple yet effective approach to defining the signal groups of an intersection is to manually inspect the intersection and define the groups by hand. This allows very specific grouping rules and easy special casing where needed or beneficial. With only a few intersections (for example in a small town) this is an acceptable solution.
 
-However as one of the goals of the project is to reduce manual input and the resulting advantages in large street networks with many intersections, an automated approach has been chosen. Signals can be groups in a lot of different ways depending on the intersection layout and applicable priority rules. In the real world, many intersections allow two green lanes to intersect each other, often seen when the intersecting lane is a low traffic lane. This increases the complexity of finding suitable groups and also poses a driver security risks, as opposing drivers may not expect an vehicle intersecting his lane.
+However as one of the goals of the project is to reduce manual input and the resulting advantages in large street networks with many intersections, an automated approach has been chosen. Signals can be grouped in a lot of different ways depending on the intersection layout and applicable priority rules. In the real world, many intersections allow two green lanes to intersect each other, often seen when the intersecting lane is a low traffic lane. This increases the complexity of finding suitable groups and also poses a driver security risk, as opposing drivers may not expect an vehicle intersecting his lane.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=6cm]{figures/intersecting_green}
 	\label{intersecting_green}
-	\caption{Intersection pattern with intersection green lanes (marked red and bold).}
+	\caption{Intersection pattern with intersecting green lanes (marked red).}
 \end{figure}
 
 \autoref{intersecting_green} shows a pattern that is common in German cities where the traffic to the opposing street is infrequent.
 
-The approach chosen for in this project should not allow conflicting green lanes and thus increase driver safety. Two lanes are in conflict, if they either intersecting each other at any point or if they merge into one lane as part of the intersection. The line from the top to the bottom and the lane from the bottom to the left in \autoref{intersecting_green} would not be allowed, because they intersect. The lane from the top to the left and the lane from the bottom to the left don't intersect, but would still not be allowed in the same group, as they merge into one lane. The approach should also produce a minimal set of signal groups without any redundant groups. A groups redundant if it is entirely contained within another group.
+The approach chosen in this project should not allow conflicting green lanes and thus increase driver safety. Two lanes are in conflict, if they either intersect each other at any point or if they merge into one lane as part of the intersection. The lane from the top to the bottom and the lane from the bottom to the left in \autoref{intersecting_green} would not be allowed, because they intersect. The lane from the top to the left and the lane from the bottom to the left don't intersect, but would still not be allowed in the same group, as they merge into one lane. The approach should also produce a minimal set of signal groups without any redundant groups. A group is redundant if it is entirely contained within another group.
 
 As an high level algorithm, this would contain the following steps:
 
@@ -101,38 +101,43 @@ Building and filtering a power set is exponential ($\mathcal{O}(2^n)$) both in r
 	\label{signal_group_pattern}
 \end{figure}
 
-Further details of the algorithm and implementation specialties a further described in \autoref{scenario_generation}.
+Further details of the algorithm and implementation specialties are described in \autoref{scenario_generation}.
 
 \subsection*{Priority}
+\label{stress_prio}
 
 In order to use a priority queue, there must be a measure of priority. The measure proposed for this is called a stress function referring to commuter stress (see \autoref{commuter_stress}). The idea is simple: Waiting for a long time in front of a red traffic light causes increasing amounts of stress and waiting in a very long queue is worse than waiting as the first vehicle in line.
 
-As such we can define a stress function for an individual signal as follows: $s(n, t): \mathbb{R}^2 \mapsto \mathbb{R}$ with $n$ being the number of cars waiting at a signal and $t$ being the since the signal was last in the green state. The overall stress of a signal group is than calculated with $S(n, t)$ as seen in \autoref{group_stress}. $N$ is the number of signals in the group and $s\left(n_i, t_i\right)$ is the stress of the current signal. The main goal is, that the stress of a signal with a few vehicles waiting for a long time will eventually surpass the stress of a signal with a lot of vehicles waiting for a shorter time. 
+As such we can define a stress function for an individual signal as follows: $s(n, t): \mathbb{R}^2 \mapsto \mathbb{R}$ with $n$ being the number of vehicles waiting at a signal and $t$ being the time since the signal last was in the green state. The overall stress of a signal group is then calculated with $S(n, t)$ as seen in \autoref{group_stress}. $N$ is the number of signals in the group and $s\left(n_i, t_i\right)$ is the stress of the current signal. The main goal is, that the stress of a signal with a few vehicles waiting for a long time will eventually surpass the stress of a signal with a lot of vehicles waiting for a shorter time. 
 
-\begin{equation}
-	\label{group_stress}
+\begin{equation} \label{group_stress}
 	S(n, t) = \sum_{i}^{N}{s\left(n_i, t_i\right)}
 \end{equation}
 
-Including the wait time in the function is quite important. A naive approach could just use a the number of vehicles in front of the signals, but this can lead to starvation problems (certain lanes not getting any time at all), if two signal groups receive a lot of new vehicles in a short time while other groups only receive a small number of vehicles. In these cases the signal controller would oscillate between the two high input groups and completely ignore other groups until the input of these active groups decreases, which can take hours during a common ''rush hour`` on main streets.
+Including the wait/red time in the function is quite important. A naive approach could just use a the number of vehicles in front of the signals, but this can lead to starvation problems (certain lanes not getting any time at all). This will happen if two signal groups receive a lot of new vehicles in a short time while other groups only receive a small number of vehicles. In these cases the signal controller would oscillate between the two high input groups and completely ignore other groups until the input of these active groups decreases, which can take hours during a common ''rush hour`` on main streets.
 
-A proposed definition for $s(n, t) $ is shown in \autoref{proposed_stress}. The value for $c$ can be is constant and should be freely chosen from $\mathbb{R}$ to guarantee a certain stress buildup per time unit even if no cars are detected at the signal. A visualization of this function can be seen in \autoref{stress_func_plot} with two values for $c$.
+A proposed definition for $s(n, t) $ is shown in \autoref{proposed_stress}. The value for $c$ is constant and can be freely chosen from $\mathbb{R}$ to guarantee a certain stress buildup per time unit even if no vehicles are detected at the signal. A visualization of this function can be seen in \autoref{stress_func_plot} with two values for $c$.
 
 \begin{equation} \label{proposed_stress}
 	s(n, t) = (n + t)(n + c)
 \end{equation}
 
-The number of cars has a quadratic influence while the time has a linear influence on the result which can also be seen in \autoref{stress_func_plot}.
+The number of vehicles has a quadratic influence while the time has a linear influence on the result which can also be seen in \autoref{stress_func_plot}.
 
 \begin{figure}[h!]
 	\centering
 	\begin{tikzpicture}
-	\begin{axis}
+	\begin{axis}[
+		zmin=0,
+		xlabel={Time},
+		ylabel={Vehicle count},
+		zlabel={Stress}
+	]
 	\addplot3[surf, samples=15, domain=0:150]{
-		(y + x) * (x + 0.1)
+		(x + y) * (x + 0.1)
 	};
 	\addplot3[mesh, samples=15, domain=0:150]{
-		(y + x) * (x + 100)
+		(x + y) * (x + 100)
 	};
 	\end{axis}
 	\end{tikzpicture}
@@ -140,13 +145,13 @@ The number of cars has a quadratic influence while the time has a linear influen
 	\caption{Visualization of the proposed stress function with $c = 0.1$ (surface) and with $c = 100$ (mesh)}
 \end{figure}
 
-This function gives a good measure of how urgently a certain traffic signals wants to switch to green. The stress value can then be used to find the signal group with the highest priority and switch its signals to the green state. This however would lead to the problem, that heavily congested lanes would usually take priority and become green even though no vehicle can actually move on these lanes. In order to lower the chance of that happening a second measure is introduced: Back pressure. This gives a measure for how congested the outgoing lanes of a signal are and is defined by \autoref{backpressure_signal} for a single signal. $s$ is the signal, $n$ is the number of outgoing lanes for this signal and $s_i$ is the amount of cars waiting in the $i$-th outgoing lane.
+This function gives a good measure of how urgently a certain traffic signals needs to switch to green. The stress value can then be used to find the signal group with the highest priority and switch its signals to the green state. This however would lead to the problem, that heavily congested lanes would usually take priority and become green even though no vehicle can actually move on these lanes. In order to lower the chance of that happening a second measure is introduced: Back pressure. This gives a measure for how congested the outgoing lanes of a signal are and is defined by \autoref{backpressure_signal} for a single signal. $s$ is the signal, $n$ is the number of outgoing lanes for this signal and $s_i$ is the amount of vehicles waiting in the $i$-th outgoing lane.
 
 \begin{equation} \label{backpressure_signal}
 b(s) = \sqrt{\sum_{i}^{n}{s_{i}^2}}
 \end{equation}
 
-This is basically the length of vector of the amounts of cars of the outgoing links. This was chosen in order to give the main weight to the ''fullest`` lane while still allowing the free lanes to reduce the value. The resulting values are normalized to the maximum (biggest value will be $1$, smallest value will be $0$). The values will then be used to calculate the stress-reducing factor with \autoref{stress_reducer}, where $x$ is the normalized back pressure and $r$ is the maximum reduction factor:
+This is basically the length of the vector of the amounts of vehicles of the outgoing links. This was chosen in order to give the main weight to the ''fullest`` lane while still allowing the free lanes to reduce the value. The resulting values are normalized to the maximum (biggest value will be $1$, smallest value will be $0$). These values will be used to calculate the stress-reducing factor with \autoref{stress_reducer}, where $x$ is the normalized back pressure and $r$ is the maximum reduction factor:
 
 \begin{equation} \label{stress_reducer}
 	f(x) = r (1 - x) + (1 - r)
@@ -154,11 +159,11 @@ This is basically the length of vector of the amounts of cars of the outgoing li
 
 That factor is than applied to the stress value on a per signal basis. That way the frequency of congested lanes will be reduced and less congested lanes will preferred.
 
-Both values, the stress and the back pressure rely on the quality of the predictions. Over-predicting the number of cars might produce to much stress or an unnecessary strong reduction. Under-predicting the number may produce incorrect priorities and depending on the stress function lead to no stress at all. So the stress function should protect against this case for example with a content minimum amount of cars (as seen in \autoref{proposed_stress}).
+Both values, the stress and the back pressure rely on the quality of the predictions. Over-predicting the number of cars might produce to much stress or an unnecessary strong reduction. Under-predicting the number may produce incorrect priorities and, depending on the stress function, lead to no stress output at all. So the function should protect against this case, for example with a constant minimum amount of vehicles (as seen in \autoref{proposed_stress}).
 
 \subsection*{Phase duration}
 
-It is now possible to order the phases by their urgency, but the phases have a duration of zero at the moment. The calculation of the phase duration for a single signal is a simple linear function on the number of vehicles waiting in front of the traffic light. The number of cars is multiplied by a constant amount of time that a car has available to drive towards the signal. In order to prevent a duration of zero, the resulting value is lower-bounded, a useful value could be one vehicle duration, so at least one car is able to pass the intersection. This function could also lead to very long durations, for example a heavily congested lane, so the time will also be upper-bounded with a multiple of the vehicle duration. The resulting function can be seen in \autoref{phase_duration}
+It is now possible to order the phases by their urgency, but at the moment the duration of a phase is still undefined. The calculation of the phase duration for a single signal is a simple linear function on the number of vehicles waiting in front of the traffic light. The number of cars is multiplied by a constant amount of time that a car has available to drive towards the signal. In order to prevent a duration of zero, the resulting value is lower-bounded, a useful value could be one vehicle duration, so at least one car is able to pass the intersection. This function could also lead to very long durations, for example a heavily congested lane, so the time will also be upper-bounded with a multiple of the vehicle duration. The resulting function can be seen in \autoref{phase_duration}
 
 \begin{equation} \label{phase_duration}
 t(n)=max\left(t_{min}, min\left(t_{max}, c \cdot n\right)\right)

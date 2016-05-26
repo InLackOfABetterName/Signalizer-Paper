@@ -118,7 +118,7 @@ Signals and signal groups are separate from the street network in MATSim, becaus
 
 As previously mentioned, the graphical network editors available for MATSim do not support traffic signal and thus all of these configurations must be either written by hand or generated from our own code base.
 
-\paragraph{Systems} A system is basically an intersection. It defines the the signals of one intersection and attaches them to their links. Signals are attached to link, that means in MATSim signals are attached to the input link. Vehicles can not enter any of the output links coming from the input link as long as the input link's signal is red, however they can enter the input link itself. For that reason, intersections are not actually modeled like in \autoref{unrestricted_intersection}, but actually similar to what can be seen in \autoref{actual_intersection}.
+\paragraph{Systems} A system is basically an intersection. It defines the signals of one intersection and attaches them to their links. Signals are attached to link, that means in MATSim signals are attached to the input link. Vehicles can not enter any of the output links coming from the input link as long as the input link's signal is red, however they can enter the input link itself. For that reason, intersections are not actually modeled like in \autoref{unrestricted_intersection}, but actually similar to what can be seen in \autoref{actual_intersection}.
 
 \begin{figure}[ht!]
 	\centering
@@ -156,6 +156,25 @@ Another approach is to randomly generate persons passing through the network. Co
 \end{enumerate}
 
 The weight is then used to control the distribution of the POIs on the persons. Given a number of persons as a command line parameter, the software will generate the population based on the defined POIs and keep will store it for future simulation runs with the same setup.
+
+\section{Signal Controller}
+
+Two different signal controllers have been implemented:
+
+\begin{enumerate}
+	\item The stress based signal controller, that implements the priority queue like signal switching
+	\item and a cycle based controller that cycles randomly with a fixed phase duration.
+\end{enumerate}
+
+The stress based controller takes a traffic tracker, a stress function and the signal system it is attached to. In order to select the group for the next phase, the stress for every signal is calculated and then summed up for each group as described in \autoref{group_stress}. For the car count of each signal, the controller takes the car count from the link, the signal is attached to. This might not always be sufficient depending on the network model, but for this network it is adequate. The red time is calculated from the current simulation timestamp and the previous timestamp, when the signal got switched to red. The group with the highest combined stress is selected and will be the upcoming green group. The group can not be activated directly, because the the currently active signal group must first switch through the red-yellow phase and yellow phases, before it can become red.
+
+The cycle base controller is very simple. It initially shuffles the the list of groups and activates the first group. When a group's state switches to green, which can be tracked by listening to the corresponding event, the controller schedules the deactivation of the signal group. When a group's state switches to red, the controller schedules the activation of the next group. This way, the controller will continuously cycle through its list of signal groups.
+
+\subsection{Debugging}
+
+Analyzing the behavior of the signal controllers can be challenging, when the simulation is progressing quickly. OTFVis' client-server architecture is very extensible and allows to send arbitrary objects over a network-capable bus. The client side can then render these objects in the simulation visualization. This is used to send text objects to the client that contain information about the internal state of the signal controller and other related objects. These text objects contain an identifier, a position, a flag to tell if the position is in screen space or simulation space and the text to be displayed. The identifier is used to update a text object with new text instead of removing the objects and recreating them.
+
+The stress based signal controller for example displays the signal stress levels and vehicle counts, which help a lot when trying understand a certain behavior.
 
 \section{Neural Network Library}
 
