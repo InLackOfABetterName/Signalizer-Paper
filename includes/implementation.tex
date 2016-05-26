@@ -176,15 +176,15 @@ Analyzing the behavior of the signal controllers can be challenging, when the si
 
 The stress based signal controller for example displays the signal stress levels and vehicle counts, which help a lot when trying understand a certain behavior.
 
-\section{Neural Network Library}
-
 \section{Prediction Network Implementation}
 
-We tried the prediction network with an input for the amount of cars that want to pass, but this did introduce unnecessary complexity and the accuracy of the network went down
+While implementing the prediction network, different inputs and outputs to the artificial neural networks were tried out. An input that was always present was the time of day. Only the hour on a 24 hour time scale and the minutes on different timescales were taken into account. The experience with a 60 minute timescale for the minutes was that the results fluctuated too much when not a lot of vehicles passed that decision point. Thus, the timescale was reduced to 6 values for the minutes.
 
-learning rule
+At first the amount of vehicles waiting on the link was the third parameter in the input vector with the output being the absolute amount of vehicles going to each connected link. This was later removed, because the correlation that the amount of cars waiting is the same as the added values of the outgoing links is unnecessary complex. Later the amount of vehicles waiting was removed and the output was made relative, which increased the precision of the prediction network significantly and lowered the complexity to learn for the artificial neural networks. To make sure that the added output values is 1, the output vector is also normalized after it is retrieved from the artificial neural network.
 
-artificial neural network type
+For the type of artificial neural network, a 3-layer feedforward network was chosen. The memory effect of recurrent networks is not needed and the complexity introduced by loops in the network would require more learning data. One hidden layer, in addition to the input and the output layer, was chosen because Perceptrons did not give the desired results and more layers would again introduce unnecessary complexity.
+
+As the learning rule, currently the supervised learning rule ``Backpropagation'' is used. It is an adaption of the delta rule, described in section \ref{sec:ann}, to multilayer perceptrons. It was chosen because of its simplicity and efficiency. Supervised learning in general was chosen because it was easy to generate the learning data from the simulation. In a real world environment, reinforcement learning in combination with some initial supervised learning may be better, because learning data can not just be extracted from a simulation.
 
 \section{Traffic Tracker Implementation}
 
