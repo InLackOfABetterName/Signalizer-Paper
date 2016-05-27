@@ -188,6 +188,78 @@ As the learning rule, currently the supervised learning rule ``Backpropagation''
 
 \section{Traffic Tracker Implementation}
 
-Problem with too many entities when infinitely splitting vehicles as they drive through decision points
+In this section, some code about implementation details of the traffic tracker will be shown. Additionally a problem that arose during the implementation was that as vehicles were added and removed from tracked links in the simulation of the traffic tracker, the tracked link queues that were iterated over were also at the same time modified. This caused concurrent modification exceptions. The solution for this problem was buffering the changes during the simulation and applying them afterwards.
 
-Adding and removing vehicles from a tracked link has to be done after the simulation in the traffic tracker
+\vspace{0.5em}
+
+\begin{lstlisting}[caption={Split Up Vehicle to Multiple Links}, label=splitUp]
+vehicle.setCurrentLinkEnteredTime(timeWhenEnteredNewLink);
+trackedLink.removeVehicle(vehicle);
+List<TrackedVehicle> vehicles = vehicle.split(predictions);
+for (int i = 0; i < vehicles.size(); i++) {
+	if (vehicles.get(i).getProbability() > 0.00001) {
+		trackedLinks.get(toLinks.get(i)).addVehicle(vehicles.get(i));
+	}
+}
+\end{lstlisting}
+
+Listing \ref{splitUp} shows how the vehicles driving from one link to the next are moved between the links. Firstly, the time the vehicle entered the new link is set. ``timeWhenEnteredNewLink'' was calculated beforehand. Thereafter the vehicle is removed from its current link, which is as said first buffered and later resolved. Then the vehicle is split up which is shown in listing \ref{splitUpProbabilities}. This returns a list of vehicles which are then added to their tracked links in line 6. Another problem encountered while implementing the traffic tracker is that at every decision point the vehicles are split and as the consequence the probabilities get ever smaller, but the object count rises sharply. This caused the performance to drop and was solved by line 5. This limits the lowest probability a vehicle can have, but introduces slight errors in the simulation.
+
+\vspace{0.5em}
+
+\begin{lstlisting}[caption={Split Up Vehicle Probabilities}, label=splitUpProbabilities]
+public List<TrackedVehicle> split(double[] probabilities) {
+	for (int i = 0; i < probabilities.length; i++) {
+		probabilities[i] = probabilities[i] * this.probability;
+	}
+	this.probability = probabilities[0];
+	List<TrackedVehicle> vehicles = new ArrayList<>();
+	vehicles.add(this);
+	for (int i = 1; i < probabilities.length; i++) {
+		vehicles.add(new TrackedVehicle(this.clones, this.currentLinkEnteredTime, probabilities[i]));
+	}
+	return vehicles;
+}
+\end{lstlisting}
+
+The missing piece in listing \ref{splitUp} is the split function in listing \ref{splitUpProbabilities}. Because the probabilities are passed in as parts of 1 and the probability of the vehicle being probably lower, the probabilities are first multiplied by the probability of this vehicle. This vehicle will drive down the first link and thus gets the first probability. Also it is added to the list of returned vehicles. Then for every other link, the vehicle can drive to a new vehicle is spawned with the respective probability and is added to the list of vehicles. At the end the list of vehicles is returned.
+
+\section{Example Traffic Sensor Error Correction}
+
+As an example of how the error correction can be implemented a minimal error correction is shown in listing \ref{inductLoopErrorCorrection}. This could for example implement the error correction for an induction loop.
+
+\vspace{0.5em}
+
+\begin{lstlisting}[caption={Induction Loop Error Correction}, label=inductLoopErrorCorrection]
+public void correctErrorIfNeeded(TrackedLink link) {
+	if (vehiclesPresent > 0 && link.getVehicleCount() == 0) {
+		link.setVehicleCountTo(1);
+	} else if (vehiclesPresent == 0 && link.getVehicleCount() > 0) {
+		link.setVehicleCountTo(0);
+	}
+}
+\end{lstlisting}
+
+The induction loop would force the vehicle count to be 1 if there before was no vehicle on the induction loop and there currently is one. Otherwise if there before was a vehicle and now there is not, it would force the simulation to have no vehicle there. This just shows how simple it could be, but in a more realistic error correction this could be expanded.
+
+\vspace{0.5em}
+
+\begin{lstlisting}[caption={Set Vehicle Count Function of TrackedLink}, label=setVehicleCountTo]
+public void setVehicleCountTo(double vehicleCount) {
+	double difference = vehicleCount - getVehicleCount();
+	double probabilityTotal = getVehicleCount();
+	for (TrackedVehicle vehicle : vehicleQueue) {
+		double partOfDifference = difference * vehicle.getProbability() / probabilityTotal;
+		difference -= partOfDifference;
+		double newProbability = partOfDifference + vehicle.getProbability();
+		if (newProbability > 1) {
+			difference += newProbability - 1;
+		} else if (newProbability < 0) {
+			difference += newProbability;
+		}
+		vehicle.setProbability(newProbability);
+	}
+}
+\end{lstlisting}
+
+Listing \ref{setVehicleCountTo} shows how the ``setVehicleCountTo'' function works. It calculates the difference between the desired and the current vehicle count. It then gets or takes the probability difference to or from the vehicles in the link.
