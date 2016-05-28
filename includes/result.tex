@@ -1,15 +1,15 @@
-This chapter will go into the results of the simulation and the validation of the success of the chosen approach. Two metrics have been chosen to analyze:
+This chapter will go into the results of the simulation and the validation of the success of the chosen approach. Two metrics have been chosen to analyze simulation runs:
 
 \begin{enumerate}
-	\item The duration of the simulation in seconds from the first agents being spawned until the last agent arrives at his target.
+	\item The duration of the simulation in seconds from the first agent being spawned until the last agent arrives at his target.
 	\item The the number of active agents in the network measured at a fixed time interval (5 minutes).
 \end{enumerate}
 
-The street network used is the one visible in \autoref{otfvis}. The main start point for agent is the top of the highway, additional smaller inputs are placed around the border of the network. The routes are defined in a way, that most of the agents must drive over the main street that comes from the highway and goes to the right to the large roundabout, which is where the main ''hotspots`` are supposed to form. The rest of the routes is distributed fairly evenly over the rest of the network.
+The street network used is the one visible in \autoref{otfvis}. The main start point for agent is the top of the highway, additional smaller inputs are placed around the border of the network. The routes are defined in a way, that most of the agents must drive over the main street that comes from the highway and goes to the right to the large roundabout, which is where the main ''hotspots`` are supposed to form. The rest of the routes are distributed fairly evenly over the rest of the network.
 
 The population size was set to 10,000 agents. These agents try to reach their destination links within a time frame of about 16.5 hours (60,000 seconds).
 
-For reference, a simple fixed-cycle signal controller is used, that has a configurable constant phase duration and cycles through the phases in a random but stable order. This represents a situation with unoptimized static signal control systems. In \autoref{cycle_based_results} the simulation duration for this signal controller with different phase durations can be seen. The simulations took all around 70 hours or three days. The optimal phase duration for the given scenario based on these tests is somewhere between two and three minutes. For further tests and comparisons, a duration of two minutes is used.
+For reference, a simple fixed-cycle signal controller is used, that has a configurable constant phase duration and cycles through the phases in a random but stable order. This represents a situation with unoptimized static signal control systems. In \autoref{cycle_based_results} the simulation duration for this signal controller with different phase durations can be seen. The simulations took all around 70 hours (three days). The optimal phase duration for the given scenario based on these tests is somewhere between two and three minutes. For further tests and comparisons, a duration of two minutes is thus used.
 
 \begin{figure}
 	\centering	
@@ -83,7 +83,7 @@ Looking at \autoref{stress_based_results}, the first thing to notice, is that th
 
 This shows two things: First what influence the prediction quality has on the switching performance (untrained being the worst case, perfect predictions the best case) and secondly how well the learning and the prediction perform.
 
-This diagrams directly confirms the importance of the time factor as mentioned in \autoref{stress_prio}, as the function $i$ caused to simulation to get stuck sooner or later in all tests. Errors in the prediction can result in stress at signals where not vehicles are waiting, while signals that have cars might get less stress or none at all. In these situations, the traffic at that location is stuck forever. In reality, people would eventually start to ignore the red signal or turn around and use a different route, but the simulation agents will not do this. While this function can fail in these situations, in a perfect world it would perform best.
+This diagram directly confirms the importance of the time factor as mentioned in \autoref{stress_prio}, as the function $i$ caused to simulation to get stuck sooner or later in all tests. Errors in the prediction can result in stress at signals where no vehicles are waiting, while signals that have cars might get less stress or none at all. In these situations, the traffic at that location is stuck forever. In reality, people would eventually start to ignore the red signal or turn around and use a different route, but the simulation agents will not do this. While this function can fail in these situations, in a perfect world it would perform best.
 
 In a perfect world without prediction errors, all functions perform comparably well with only a few hours difference and all under 24 hours. The more relevant results are those from more realistic situations where prediction errors occur. Here the simulation takes roughly twice as long no matter if the prediction network was trained or not. Only function $h$ showed an improvement after training the prediction. While all stress-based tests are significantly faster then cycle-based tests, these results show already, that the training of the prediction network is not yet good enough, to produce a significantly better result than an untrained network.
 
@@ -112,7 +112,7 @@ In a perfect world without prediction errors, all functions perform comparably w
 
 The second metric, the number of active/living simulation agents over time, show not only how long the simulation was running, but also how well the network was keeping up with the demand. All four functions and the cycle-base controller as a reference, have each been graphed without training the network, with a trained network and finally with 100\% accurate predictions.
 
-In \autoref{agent_statistic_dumb} the graphs for the test with the untrained network can be seen. The graph of the function $i$ (green line) clearly shows how bad this function performs when the predictions are wrong. The graphs all peek at 60,000 seconds (about 16.5 hours) when the last agent gets spawned. That is also the time, when the traffic jams are the biggest, the largest being at the central intersecting on the main street and where the highway enters the main street. The other stress functions perform similar to the cycle based controller with a similarly high peek around 5,000 agents, however the number of agents decreases more quickly. The $i$ function however keeps almost the entire population inside the network and only loses less than 2000 agents until it peeks and then stays stable.
+In \autoref{agent_statistic_dumb} the graphs for the test with the untrained network can be seen. The graph of the function $i$ (green line) clearly shows how bad this function performs when the predictions are wrong. The graphs all peek at 60,000 seconds (about 16.5 hours) when the last agent gets spawned. That is also the time, when the traffic jams are the biggest, the largest being at the central intersecting on the main street and where the highway enters the main street. The other stress functions perform similar to the cycle based controller with a similarly high peek around 5,000 agents, but the number of agents decreases more quickly. The $i$ function however keeps almost the entire population inside the network and only loses less than 2000 agents until it peeks and then stays stable.
 
 \begin{figure}[ht!]
 	\centering
@@ -141,7 +141,7 @@ The second diagram, \autoref{agent_statistic_learned}, more clearly shows the im
 
 Finally under optimal conditions the results are, which is to be expected, much better. The functions $f$ and $g$ have the highest peak in this scenario with still over 2,000 agents at the same time on the streets, $h$ is only slightly better. The $i$ function's graph is interesting, because there is almost no buildup of agents in the network and it peaks below 1,000 agents which are gone just about an hour later.
 
-The last to diagrams show that with good predicts, less weight on the time aspects yields better results. No time aspect however will lead to problems in the real world. 
+The last two diagrams show that with good predictions, less weight on the time aspects yields better results. No time aspect however will lead to problems in the real world. 
 
 \begin{figure}[bt!]
 	\centering
