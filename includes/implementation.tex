@@ -47,24 +47,25 @@ Run-Time Extensions can access data trough the CORSIM application programming in
 \begin{table}[!ht]
   	\centering
   	\begin{tabular}{l|l|l|l}
-		 & CityTrafficSimulator & MATSim & CORSIM \\[10pt]
+		Requirement & CityTrafficSimulator & MATSim & CORSIM \\
 		 \hline\hline
-		Requirement & & & \\[10pt]
+		Defined \\
 		\hline
-		R1 & yes & yes & yes \\[10pt]
-		R2 & possible & possible & no \\[10pt]
-		R3 & yes & possible & yes \\[10pt]
-		R4 & possible & possible & no \\[10pt]
-		R5 & possible & yes & yes \\[10pt]
-		R6 & no & no & no \\[10pt]
-		R7 & yes & possible & yes \\[10pt]
-		R8 & possible & possible & possible \\[10pt]
-		R9 & yes & possible & yes \\[10pt]
-		R10 & no & no & no \\[10pt]
-		Other & & & \\[10pt]
+		R1 & yes & yes & yes \\
+		R2 & possible & possible & no \\
+		R3 & yes & possible & yes \\
+		R4 & possible & possible & no \\
+		R5 & possible & yes & yes \\
+		R6 & no & no & no \\
+		R7 & yes & possible & yes \\
+		R8 & possible & possible & possible \\
+		R9 & yes & possible & yes \\
+		R10 & no & no & no \\
+		\hline\hline
+		Extra \\
 		\hline
-		Open Source & yes & yes & no \\[10pt]
-		Prog. Language & C\# & Java & C++, FORTRAN, ... \\[10pt]
+		Open Source & yes & yes & no \\
+		Prog. Language & C\# & Java & C++, FORTRAN, ... \\
 	\end{tabular}
   	\caption{Traffic Simulation Software Requirement Fulfillment}
   	\label{simulationRequirementsComparison}
@@ -192,7 +193,7 @@ In this section, some code about implementation details of the traffic tracker w
 
 \vspace{0.5em}
 
-\begin{lstlisting}[caption={Split Up Vehicle to Multiple Links}, label=splitUp]
+\begin{lstlisting}[caption={Split Up Vehicle to Multiple Links}, label=splitUp, language=Java]
 vehicle.setCurrentLinkEnteredTime(timeWhenEnteredNewLink);
 trackedLink.removeVehicle(vehicle);
 List<TrackedVehicle> vehicles = vehicle.split(predictions);
@@ -207,7 +208,7 @@ Listing \ref{splitUp} shows how the vehicles driving from one link to the next a
 
 \vspace{0.5em}
 
-\begin{lstlisting}[caption={Split Up Vehicle Probabilities}, label=splitUpProbabilities]
+\begin{lstlisting}[caption={Split Up Vehicle Probabilities}, label=splitUpProbabilities, language=Java]
 public List<TrackedVehicle> split(double[] probabilities) {
 	for (int i = 0; i < probabilities.length; i++) {
 		probabilities[i] = probabilities[i] * this.probability;
@@ -230,7 +231,7 @@ As an example of how the error correction can be implemented a minimal error cor
 
 \vspace{0.5em}
 
-\begin{lstlisting}[caption={Induction Loop Error Correction}, label=inductLoopErrorCorrection]
+\begin{lstlisting}[caption={Induction Loop Error Correction}, label=inductLoopErrorCorrection, language=Java]
 public void correctErrorIfNeeded(TrackedLink link) {
 	if (vehiclesPresent > 0 && link.getVehicleCount() == 0) {
 		link.setVehicleCountTo(1);
@@ -244,7 +245,7 @@ The induction loop would force the vehicle count to be 1 if there before was no 
 
 \vspace{0.5em}
 
-\begin{lstlisting}[caption={Set Vehicle Count Function of TrackedLink}, label=setVehicleCountTo]
+\begin{lstlisting}[caption={Set Vehicle Count Function of TrackedLink}, label=setVehicleCountTo, language=Java]
 public void setVehicleCountTo(double vehicleCount) {
 	double difference = vehicleCount - getVehicleCount();
 	double probabilityTotal = getVehicleCount();
