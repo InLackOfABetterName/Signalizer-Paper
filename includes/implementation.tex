@@ -171,7 +171,7 @@ The stress based controller takes a traffic tracker, a stress function and the s
 
 The cycle based controller is very simple. It initially shuffles the the list of groups and activates the first group. When a group's state switches to green, which can be tracked by listening to the corresponding event, the controller schedules the deactivation of the signal group. When a group's state switches to red, the controller schedules the activation of the next group. This way, the controller will continuously cycle through its list of signal groups.
 
-\subsection{Debugging}
+\subsection*{Debugging}
 
 Analyzing the behavior of the signal controllers can be challenging, when the simulation is progressing quickly. OTFVis' client-server architecture is very extensible and allows to send arbitrary objects over a network-capable bus. The client side can then render these objects in the simulation visualization. This is used to send text objects to the client that contain information about the internal state of the signal controller and other related objects. These text objects contain an identifier, a position, a flag to tell if the position is in screen space or simulation space and the text to be displayed. The identifier is used to update a text object with new text instead of removing the objects and recreating them.
 
