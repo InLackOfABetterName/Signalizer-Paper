@@ -68,7 +68,7 @@ MATSim was chosen as the simulation for the traffic light control system. As can
 
 \subsection*{Dependency Injection}
 
-The MATSim software is currently in the migration phase of switching from manual (compile-time) dependency injection to runtime dependency injection using the Guice Framework developed by Google. Extensions can be developed as a separate dependency injection module for Guice providing additional class bindings. This is what has been done for this project as well. The project is linked against the required matsim modules and provides a new module that installs all interfaces and implementations into the injector. The module takes parameters for default bindings which can be supplied manually, if the project is used as a library, or automatically from command line parameters.
+The MATSim software is currently in the migration phase of switching from manual (compile-time) dependency injection to runtime dependency injection using the Guice Framework developed by Google. Extensions can be developed as a separate dependency injection module for Guice providing additional class bindings. This is what has been done for this project as well. The project is linked against the required MATSim modules and provides a new module that installs all interfaces and implementations into the injector. The module takes parameters for default bindings which can be supplied manually, if the project is used as a library, or automatically from command line parameters.
 
 Due to problems with the dependency injection module of OTFVis, probably caused by an incomplete migration, it was necessary to completely recreate parts of the component's initialization code in order to be able to start the visualization with the customizations needed by the project.
 
