@@ -48,12 +48,14 @@ Traffic lights can be controlled in one of two ways at the highest level: Static
 
 A problem that both static and adaptive control systems under heavy congestions suffer from, is that already congested lanes are signaled green, even though no vehicle can actually drive. In this situation the control system should skip the already congested lanes and distribute the time to other links. This may not reduce the overall congestion on the already congested road, but it will reduce the chance of vehicles standing inside the intersection and improves the latency for the free lanes.
 
+\begin{samepage}
 Based on this information are the two main goals of this project:
 
 \begin{enumerate}
 	\item The system should be able to produce good switching plans with a small number of sensors (reduction of initial fixed cost)
 	\item Require as little manual user interaction (traffic analysts changing plans or parameters) as possible (reduction of maintenance cost)
 \end{enumerate}
+\end{samepage}
 
 In order to be able to work with a street network, that is not completely covered with traffic sensors, a mechanism to estimate traffic at unmonitored places is required. This could be done by utilizing additional data sources ranging from manually collected statistical data, used for the traditional static planning, to smartphone geo-locations of drivers, which leads into the area of swarm intelligence not covered by this paper. Another approach would be to use the available sensors for a prediction model, either pre-calculated or calculated on the fly.
 
