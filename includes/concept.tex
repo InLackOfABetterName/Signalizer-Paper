@@ -1,15 +1,15 @@
 \section{Overview}
 
-This chapter will explain the general concept and architecture of the traffic light control system developed as part of this thesis. The traffic light control system will be built upon an existing traffic simulation, because the thesis is not about the simulation, but the optimization of the traffic light control. Which simulation is chosen will be discussed in a later section of the thesis and is not really relevant here, but the architecture will influence which traffic simulation will be chosen. The requirements for the traffic simulation will be derived from this concept.
+This chapter will explain the general concept and architecture of the traffic light control system developed as part of this thesis. The traffic light control system will be built upon an existing traffic simulation, because the thesis is not about the simulation, but the optimization of the traffic light control. Which simulation is chosen will be discussed in a later section of the thesis and is not really relevant here, because the architecture and general concepts are independent of a specific simulation software, but the architecture will influence which traffic simulation will be chosen. The requirements for the traffic simulation will be derived from this concept.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=16cm]{figures/architecture}
-  \label{architecture}
   \caption{Architecture of the Traffic Light Control System}
+  \label{architecture}
 \end{figure}
 
-The traffic light control system is separated into two general areas, the learning part of the system and the controlling part. Either the system just observes a running traffic simulation and learns the patterns of the traffic or it observes the simulation through traffic sensors and controls the traffic lights according to the predictions combined with the data from the traffic sensors. It is imaginable to let the system learn from a simulation and control it at the same time, but this is outside of the scope of this thesis. But it could possibly improve the results and make it more practicable for a real world deployment.
+The traffic light control system is separated into two general areas, the learning part of the system and the controlling part. Either the system just observes a running traffic simulation and learns the patterns of the traffic or it observes the simulation through traffic sensors and controls the traffic lights according to the predictions combined with the data from the traffic sensors. It is imaginable to let the system learn from a simulation and control it at the same time, but this is outside of the scope of this thesis. This could possibly improve the results and make it more practicable for a real world deployment.
 
 The control part of the system is the more important. The learning is relatively simple and will be easily interchangeable. This is also the reason why the architecture was split into two parts. With the simulation the data to learn from will be recorded from the simulation itself, but in a real world scenario, data could also be fed from other sources, thus the data collection in the learning part is not a main feature of the traffic light control system and was split from the core control part.
 
