@@ -65,7 +65,11 @@ Given the sensors are in place and generate electrical signals for passing vehic
 \section{Artificial Neural Networks}
 \label{sec:ann}
 
-Artificial neural networks (ANNs) is an important field in machine learning and cognitive science. There are many different kinds of ANNs, but all have in common that they are inspired by biological neural networks, like the human brain. The big advantage of neural networks over algorithms that were explicitly developed for a task is that neural networks can learn behavior like classification from a set of example data and do not have to be explicitly modeled. For this the neural network is modeled and the input and output vectors are defined. Then a set of example data is fed through the neural network and a learning algorithm tries to find a configuration of the neural network to produce the desired outputs for the respective inputs. The ANNs form their own understanding of the problem while learning.
+``A neural network is a parallel distributed information processing structure in the
+form of a directed graph''.\cite{introToNNs} The nodes of the graphs are called processing elements, with the links between them called connections. Each processing element can have any amount of input and output connections. But, the output connections of one processing element all have to carry the same value. Processing elements process the incoming data with a transfer function.\cite{introToNNs}
+
+There is a separation of biological and artificial neural networks. Artificial neural networks (ANNs) try to model human congnition and biological neural networks with neurons.\cite{logicalCalculus1943} 
+The big advantage of ANNs over algorithms that were explicitly developed for a task is that they can learn behavior like classification from a set of example data. 
 
 \begin{figure}[ht]
 	\centering
@@ -73,10 +77,10 @@ Artificial neural networks (ANNs) is an important field in machine learning and 
 	\caption[Structure of a neuron]{Structure of a neuron \protect\footnotemark}
 	\label{neuron}
 \end{figure}
-% https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/ArtificialNeuronModel_english.png/600px-ArtificialNeuronModel_english.png
-\footnotetext{wikipedia}
 
-ANNs are typically a set of interconnected neurons. Figure \ref{neuron} shows the structure of a neuron. A neuron has a set of $n$ input variables $x_1, x_2, x_3, ..., x_n$ which either are connected to the output of another neuron or the input to the neural network that is given to the network by the user. Each input variable is multiplied with a weight $w_1j, w_2j, w_3j, ..., w_nj$ where $j$ is the iteration of the weight. The products of the variables and their specific weights are then summed and passed to an activation function that determines what the output of the neuron is.
+\footnotetext{\url{https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/ArtificialNeuronModel_english.png/600px-ArtificialNeuronModel_english.png}}
+
+Figure \ref{neuron} shows the structure of a neuron. A neuron has a set of $n$ input variables $x_1, x_2, x_3, ..., x_n$ which either are connected to the output of another neuron or the input to the neural network that is given to the network by the user. Each input variable is multiplied with a weight $w_1j, w_2j, w_3j, ..., w_nj$ where $j$ is the iteration of the weight. The products of the variables and their specific weights are then summed (transfer function) and passed to an activation function that determines what the output of the neuron is.\cite{introToNNs}
 
 \begin{figure}[ht]
 	\centering
@@ -84,12 +88,14 @@ ANNs are typically a set of interconnected neurons. Figure \ref{neuron} shows th
 	\caption[Step and sigmoid activation function]{Step and sigmoid activation function \protect\footnotemark}
 	\label{activation_functions}
 \end{figure}
-% http://www.cs.nott.ac.uk/~pszgxk/courses/g5aiai/006neuralnetworks/images/actfn002.jpg
-\footnotetext{interwebs}
 
-Examples for the activation function would be a step function that just compares the value to a threshold and puts out 0 or 1 or a sigmoid function that puts out a value between 0 and 1. A plot of both can be seen in figure \ref{activation_functions}. $t$ in the case of the step function is a threshold that the input value has to pass in order to activate the neuron. In most applications the step function is used because it can differentiate better. The output can then be given to the connected neurons or the output of the neural network.
+\footnotetext{\url{http://www.cs.nott.ac.uk/~pszgxk/courses/g5aiai/006neuralnetworks/images/actfn002.jpg}}
 
-An important aspect of ANNs is how the neurons are interconnected. The most basic structure of ANNs are feedforward neural networks. In this model the neural network is divided into layers and every layer only passes its information to the next layer. Thus, the input is fed forward through the layers until it is at the output layer. In contrast to that there are recurrent neural networks that allow the graph of neurons to have cycles. This allows the network to have some kind of memory and keep values to use in later iterations. An example for the use of recurrent neural networks would be a word processor that takes single words but can process whole sentences by memorizing what words were already passed through. There are a lot of sub categories of these structures and other architectures of ANNs, but feedforward and recurrent is the most important differentiation and the most relevant for this thesis.
+Examples for the activation function would be a step function that just compares the value to a threshold and puts out 0 or 1 or a sigmoid function that puts out a value between 0 and 1. A plot of both can be seen in figure \ref{activation_functions}. $t$ in the case of the step function is a threshold that the input value has to pass in order to activate the neuron. In most applications the step function is used because it can differentiate better between values that are around 0. The output can then be given to the connected neurons or the output of the neural network.\cite{introToNNs}
+
+The process of designing an ANN to solve a problem is to first define input and output vectors and a network of neurons and connections that process the input vector and send the result to the output vector. Then a set of example data is passed through the ANN and a learning algorithm tries to find a configuration of the neurons weights to produce the desired outputs for the respective inputs. The ANNs form their own understanding of the problem while learning and can then, with enough training, solve problems that were not learned beforehand.
+
+An important aspect of ANNs is how the neurons are interconnected. The most basic structure an ANN can have is that of feedforward neural networks. In this model the ANN is divided into layers and every layer only passes its information to the next layer. Thus, the input is fed forward through the layers until it is at the output layer, without loops in the network. In contrast to that, there are recurrent neural networks that allow the graph of neurons to have cycles. This allows the network to have some kind of state and keep values to use when processing data at a later point in time. An example for the use of recurrent neural networks would be a word processor that takes single words but can process whole sentences by memorizing what words were already passed through.\cite{nnsAndPatternRecog} There are a lot of sub categories of these structures and other architectures of ANNs, but feedforward and recurrent is the most important differentiation and the most relevant for this thesis.\cite{introToNNs}
 
 \begin{figure}[ht]
 	\centering
@@ -97,18 +103,18 @@ An important aspect of ANNs is how the neurons are interconnected. The most basi
 	\caption[Structure of a perceptron]{Structure of a perceptron \protect\footnotemark}
 	\label{perceptron}
 \end{figure}
-% http://www.nnwj.de/uploads/pics/1_2-perceptron.gif
-\footnotetext{interwebs}
 
-Feedforward neural networks that only have an input layer and an output layer are called perceptrons. Such a network is shown in figure \ref{perceptron} They are the simplest kind of neural network, but they are very limited in their use. Because a neuron can only distinguish between two categories, a neural network with only two layers is not even able to map the logical XOR (exclusive or) operation. This is also known as the problem of linear separability. The advantage of this kind of neural network is that it does not need a lot of learning data and can use a really simple learning algorithm called the delta rule.
+\footnotetext{\url{http://www.nnwj.de/uploads/pics/1_2-perceptron.gif}}
 
-The delta rule is probably one of the most simple learning rules. It calculates a weight delta $\Delta w_{ji}$ for every $i$-th weight of neuron $j$ like this:
+Feedforward neural networks that only have an input layer and an output layer are called perceptrons. Such a network is shown in figure \ref{perceptron} They are the simplest kind of ANN, but they are very limited in their use. Because a neuron can only distinguish between two categories, a neural network with only two layers is not even able to map the logical XOR (exclusive or) operation.\cite{Minsky1988} This is also known as the problem of linear separability. The advantage of this kind of neural network is that it does not need a lot of learning data and can use a really simple learning algorithm called the delta rule.
+
+The delta rule is probably one of the most simple learning rules and will in this thesis be used to explain the general idea of learning rules. It calculates a weight delta $\Delta w_{ji}$ for every $i$-th weight of neuron $j$ like this:
 
 \begin{center}
 	$\Delta w_{ji} = \alpha (t_j  y_j)g'(h_j)x_i$
 \end{center}
 
-With $\alpha$ being the learning rate, which directs how fast the network is reacting to trends, $t_j$ the target output, $y_j$ the actual output, $g$ being the activation function, $h_j$ the sum of the weighted inputs and $x_i$ the $i$-th input. This weight delta is then applied to the actual weight of the input. It is pretty easy to see how this works. The higher the difference between the target output of the neuron and the actual input, the higher the impact on the weight and the sign of this difference also defines in which direction the weight changes. The derivation of the activation function shows high values when the sum of the weighted inputs is near the threshold, thus the neuron is uncertain and a slight change in the weights could adjust the decision in one or the other direction. Furthermore the higher the input value the higher the change in the weight because it impacts the output more than lower input values.
+With $\alpha$ being the learning rate, which directs how fast the network is reacting to trends, $t_j$ the target output, $y_j$ the actual output, $g$ being the activation function, $h_j$ the sum of the weighted inputs and $x_i$ the $i$-th input. This weight delta is then applied to the actual weight of the input. This works, because the higher the difference between the target output of the neuron and the actual input, the higher the impact on the weight and the sign of this difference also defines in which direction the weight changes. The derivation of the activation function shows high values when the sum of the weighted inputs is near the threshold, thus the neuron is uncertain and a slight change in the weights could adjust the decision in one or the other direction. Furthermore the higher the input value the higher the change in the weight because it impacts the output more than lower input values.\cite{deltaRule}
 
 \begin{figure}[ht]
 	\centering
@@ -116,13 +122,13 @@ With $\alpha$ being the learning rate, which directs how fast the network is rea
 	\caption[Structure of a multilayer perceptron that implements an XOR]{Structure of a multilayer perceptron that implements an XOR \protect\footnotemark}
 	\label{multilayer_XOR}
 \end{figure}
-% https://upload.wikimedia.org/wikipedia/commons/7/7b/XOR_perceptron_net.png
-\footnotetext{wikipedia}
 
-A bit more complex than perceptrons are multilayer perceptrons. They not only have an input and an ouput layer, but also one to several hidden layers that get fed from the previous layer and feed into the following layer. With this architecture more complex problems like XOR can be solved. The structure and weights of an XOR neural network are shown in \autoref{multilayer_XOR}.
+\footnotetext{\url{https://upload.wikimedia.org/wikipedia/commons/7/7b/XOR_perceptron_net.png}}
 
-Above was already shown how learning in simple ANNs takes place, but besides the function that determines how much a weight of a neuron changes, ANNs are also divided by the form of learning. This depends on how the learning set given to the neural network is created and composed. In the following the three most popular are described, being supervised learning, unsupervised learning and reinforcement learning.
+A bit more complex than perceptrons are multilayer perceptrons. They not only have an input and an ouput layer, but also one to several hidden layers that get fed from the previous layer and feed into the following layer. With this architecture more complex problems like XOR can be solved. The structure and weights of an XOR neural network are shown in \autoref{multilayer_XOR}.\cite{introToNNs}
 
-With supervised learning, the learning set consists of pairs of input and output vectors and it thrives to adjust the weights of the neural network so that it maps the function described by the learning set. Then there is unsupervised learning which just takes for example a cost function, that calculates some costs from the input and output of the ANN, and a learning set, only consisting of data, and tries to minimize the cost function by adjusting the weights. The third possible scenario is reinforcement learning. This happens when there is no data set to learn from, but an agent interacts with some world and learns which interactions are good and which are bad by observing the effects. This is for example used when an artificial intelligence that plays chess, is playing against itself to get better.
+Above was already shown how learning in simple ANNs takes place, but besides the function that determines how much a weight of a neuron changes, ANNs are also divided by the form of learning. This depends on how the learning set given to the neural network is created and composed. In the following the three most popular are described, being supervised learning, unsupervised learning and reinforcement learning.\cite{introToNNs}
+
+With supervised learning, the learning set consists of pairs of input and output vectors and it thrives to adjust the weights of the neural network so that it maps the function described by the learning set. Then there is unsupervised learning which just takes for example a cost function, that calculates some costs from the input and output of the ANN, and a learning set, only consisting of input data, and tries to minimize the cost function by adjusting the weights. The third possible scenario is reinforcement learning. This happens when there is no data set to learn from, but an agent interacts with some world and learns which interactions are good and which are bad by observing the effects. This is for example used when an artificial intelligence that plays chess, is playing against itself to get better.\cite{introToNNs}
 
 A problem with artificial neural networks is that the higher the complexity of the input and output vectors get, the higher is the demand for more learning data to get good results when using it. This is especially problematic for supervised learning algorithms, because then the data has to be tagged by humans. This problem can be somewhat solved with reinforcement learning because it does not need the huge amounts of input from a human who is slow. This has to be taken into account when weighing between detail of the input and output and the amount of learning data needed.
