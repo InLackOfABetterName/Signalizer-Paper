@@ -177,7 +177,7 @@ Analyzing the behavior of the signal controllers can be challenging, when the si
 
 The stress based signal controller for example displays the signal stress levels and vehicle counts, which help a lot when trying understand a certain behavior.
 
-\section{Prediction Network Implementation}
+\section{Prediction Network}
 
 While implementing the prediction network, different inputs and outputs to the artificial neural networks were tried out. An input that was always present was the time of day. Only the hour on a 24 hour time scale and the minutes on different timescales were taken into account. The experience with a 60 minute timescale for the minutes was that the results fluctuated too much when not a lot of vehicles passed that decision point. Thus, the timescale was reduced to 6 values for the minutes.
 
@@ -187,7 +187,7 @@ For the type of artificial neural network, a 3-layer feedforward network was cho
 
 As the learning rule, currently the supervised learning rule ``Backpropagation'' is used. It is an adaption of the delta rule, described in section \ref{sec:ann}, to multilayer perceptrons. It was chosen because of its simplicity and efficiency. Supervised learning in general was chosen because it was easy to generate the learning data from the simulation. In a real world environment, reinforcement learning in combination with some initial supervised learning may be better, because learning data can not just be extracted from a simulation.
 
-\section{Traffic Tracker Implementation}
+\section{Traffic Tracker}
 
 In this section, some code about implementation details of the traffic tracker will be shown. Additionally a problem that arose during the implementation was that as vehicles were added and removed from tracked links in the simulation of the traffic tracker, the tracked link queues that were iterated over were also at the same time modified. This caused concurrent modification exceptions. The solution for this problem was buffering the changes during the simulation and applying them afterwards.
 
