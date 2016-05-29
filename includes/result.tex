@@ -85,9 +85,7 @@ This shows two things: First what influence the prediction quality has on the sw
 
 This diagram directly confirms the importance of the time factor as mentioned in \autoref{stress_prio}, as the function $i$ caused to simulation to get stuck sooner or later in all tests. Errors in the prediction can result in stress at signals where no vehicles are waiting, while signals that have cars might get less stress or none at all. In these situations, the traffic at that location is stuck forever. In reality, people would eventually start to ignore the red signal or turn around and use a different route, but the simulation agents will not do this. While this function can fail in these situations, in a perfect world it would perform best.
 
-In a perfect world without prediction errors, all functions perform comparably well with only a few hours difference and all under 24 hours. The more relevant results are those from more realistic situations where prediction errors occur. Here the simulation takes roughly twice as long no matter if the prediction network was trained or not. Only function $h$ showed an improvement after training the prediction. While all stress-based tests are significantly faster then cycle-based tests, these results show already, that the training of the prediction network is not yet good enough, to produce a significantly better result than an untrained network.
-
-\begin{figure}[hb!]
+\begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}
 	\begin{axis}[
@@ -110,6 +108,8 @@ In a perfect world without prediction errors, all functions perform comparably w
 	\caption{Agents living per time unit without previous learning.}
 \end{figure}
 
+
+In a perfect world without prediction errors, all functions perform comparably well with only a few hours difference and all under 24 hours. The more relevant results are those from more realistic situations where prediction errors occur. Here the simulation takes roughly twice as long no matter if the prediction network was trained or not. Only function $h$ showed an improvement after training the prediction. While all stress-based tests are significantly faster then cycle-based tests, these results show already, that the training of the prediction network is not yet good enough, to produce a significantly better result than an untrained network.
 The second metric, the number of active/living simulation agents over time, show not only how long the simulation was running, but also how well the network was keeping up with the demand. All four functions and the cycle-base controller as a reference, have each been graphed without training the network, with a trained network and finally with 100\% accurate predictions.
 
 In \autoref{agent_statistic_dumb} the graphs for the test with the untrained network can be seen. The graph of the function $i$ (green line) clearly shows how bad this function performs when the predictions are wrong. The graphs all peek at 60,000 seconds (about 16.5 hours) when the last agent gets spawned. That is also the time, when the traffic jams are the biggest, the largest being at the central intersecting on the main street and where the highway enters the main street. The other stress functions perform similar to the cycle based controller with a similarly high peek around 5,000 agents, but the number of agents decreases more quickly. The $i$ function however keeps almost the entire population inside the network and only loses less than 2000 agents until it peeks and then stays stable.
