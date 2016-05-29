@@ -180,8 +180,6 @@ As the learning rule, currently the supervised learning rule ``Backpropagation''
 
 \section{Traffic Tracker}
 
-In this section, some code about implementation details of the traffic tracker will be shown. Additionally a problem that arose during the implementation was that as vehicles were added and removed from tracked links in the simulation of the traffic tracker, the tracked link queues that were iterated over were also at the same time modified. This caused concurrent modification exceptions. The solution for this problem was buffering the changes during the simulation and applying them afterwards.
-
 \vspace{0.5em}
 
 \begin{lstlisting}[caption={Split Up Vehicle to Multiple Links}, label=splitUp, language=Java]
@@ -194,6 +192,8 @@ for (int i = 0; i < vehicles.size(); i++) {
 	}
 }
 \end{lstlisting}
+
+In this section, some code about implementation details of the traffic tracker will be shown. Additionally a problem that arose during the implementation was that as vehicles were added and removed from tracked links in the simulation of the traffic tracker, the tracked link queues that were iterated over were also at the same time modified. This caused concurrent modification exceptions. The solution for this problem was buffering the changes during the simulation and applying them afterwards.
 
 Listing \ref{splitUp} shows how the vehicles driving from one link to the next are moved between the links. Firstly, the time the vehicle entered the new link is set. ``timeWhenEnteredNewLink'' was calculated beforehand. Thereafter the vehicle is removed from its current link, which is as said first buffered and later resolved. Then the vehicle is split up which is shown in listing \ref{splitUpProbabilities}. This returns a list of vehicles which are then added to their tracked links in line 6. Another problem encountered while implementing the traffic tracker is that at every decision point the vehicles are split and as the consequence the probabilities get ever smaller, but the object count rises sharply. This caused the performance to drop and was solved by line 5. This limits the lowest probability a vehicle can have, but introduces slight errors in the simulation.
 
@@ -234,6 +234,8 @@ public void correctErrorIfNeeded(TrackedLink link) {
 
 The induction loop would force the vehicle count to be 1 if there was no vehicle on the induction loop before and there currently is one. Otherwise if there was a vehicle before and now there is not, it will force the simulation to have no vehicle there. This just shows how simple it could be, but in a more realistic error correction this could be expanded.
 
+Listing \ref{setVehicleCountTo} shows how the ``setVehicleCountTo'' function works. It calculates the difference between the desired and the current vehicle count. It then gets or takes the probability difference to or from the vehicles in the link.
+
 \vspace{0.5em}
 
 \begin{lstlisting}[caption={Set Vehicle Count Function of TrackedLink}, label=setVehicleCountTo, language=Java]
@@ -253,5 +255,3 @@ public void setVehicleCountTo(double vehicleCount) {
 	}
 }
 \end{lstlisting}
-
-Listing \ref{setVehicleCountTo} shows how the ``setVehicleCountTo'' function works. It calculates the difference between the desired and the current vehicle count. It then gets or takes the probability difference to or from the vehicles in the link.
