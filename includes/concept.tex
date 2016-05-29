@@ -6,10 +6,8 @@ This chapter will explain the general concept and architecture of the traffic li
   \centering
   \includegraphics[width=16cm]{figures/architecture}
   \label{architecture}
-  \caption[Architecture of the Traffic Light Control System]{Architecture of the Traffic Light Control System \protect\footnotemark}
+  \caption{Architecture of the Traffic Light Control System}
 \end{figure}
-
-\footnotetext{own illustration}
 
 The traffic light control system is separated into two general areas, the learning part of the system and the controlling part. Either the system just observes a running traffic simulation and learns the patterns of the traffic or it observes the simulation through traffic sensors and controls the traffic lights according to the predictions combined with the data from the traffic sensors. It is imaginable to let the system learn from a simulation and control it at the same time, but this is outside of the scope of this thesis. But it could possibly improve the results and make it more practicable for a real world deployment.
 
@@ -27,10 +25,8 @@ The final component of the architecture is the traffic tracker that keeps all ot
   \centering
   \includegraphics[width=16cm]{figures/errorCorrectionProblem}
   \label{errorCorrectionProblem}
-  \caption[Error Correction Problem]{Error Correction Problem \protect\footnotemark}
+  \caption{Error Correction Problem}
 \end{figure}
-
-\footnotetext{own illustration}
 
 Figure \ref{errorCorrectionProblem} shows an example for the error correction problem. In this example two vehicles V1 and V2 depicted in green entered at the road crossing C4. (1) Here the first prediction was that one car drives to C1 and the other one drives to C5. (2) This prediction is only based on the learned traffic patterns and could be completely wrong, but should in the most cases be right.
 
@@ -56,8 +52,8 @@ This results in the entity relationships shown in \autoref{sig_ctrl_relations}.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=13cm]{figures/signal_light_controller}
+	\caption{Entity Relationships Inside the Traffic Light Controller}
 	\label{sig_ctrl_relations}
-	\caption{Entity relationships inside the Traffic Light Controller}
 \end{figure}
 
 From now on the term ''signal controller`` will refer to the intersection local controllers. Its the responsibility of these controllers to decide which lights to switch to green and for how long. In contrast to the commonly applied concepts of cycles and splits (as seen in \autoref{analysis}), these controllers will use a different approach. Instead of having a fixed cycle time separated into splits per phase, a priority queue like approach has been chosen to define the order of phases and a load based function is applied to decide the length of the given phase.
@@ -74,8 +70,8 @@ However as one of the goals of the project is to reduce manual input and the res
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=6cm]{figures/intersecting_green}
+	\caption{Intersection Pattern with Intersecting Green Lanes (Marked Red).}
 	\label{intersecting_green}
-	\caption{Intersection pattern with intersecting green lanes (marked red).}
 \end{figure}
 
 \autoref{intersecting_green} shows a pattern that is common in German cities where the traffic to the opposing street is infrequent.
@@ -97,7 +93,7 @@ Building and filtering a power set is exponential ($\mathcal{O}(2^n)$) both in r
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=14cm]{figures/signal_group_patterns}
-	\caption{Possible patterns of signal groups produced by the given algorithm. Most patterns can be rotated.}
+	\caption{Possible Patterns of Signal Groups Produced by the Given Algorithm. Most Patterns Can Be Rotated.}
 	\label{signal_group_pattern}
 \end{figure}
 
@@ -141,8 +137,8 @@ The function has been modeled, so it has the main emphasize on the vehicle count
 	};
 	\end{axis}
 	\end{tikzpicture}
+	\caption{Visualization of the Proposed Stress Function With $c = 0.1$ (Surface) And With $c = 100$ (Mesh)}
 	\label{stress_func_plot}
-	\caption{Visualization of the proposed stress function with $c = 0.1$ (surface) and with $c = 100$ (mesh)}
 \end{figure}
 
 This function gives a good measure of how urgently a certain traffic signal needs to switch to green. The stress value can then be used to find the signal group with the highest priority and switch its signals to the green state. This however would lead to the problem, that heavily congested lanes would usually take priority and become green even though no vehicle can actually move on these lanes. In order to lower the chance of that happening a second measure is introduced: Back pressure. This gives a measure for how congested the outgoing lanes of a signal are and is defined by \autoref{backpressure_signal} for a single signal. $s$ is the signal, $n$ is the number of outgoing lanes for this signal and $s_i$ is the amount of vehicles waiting in the $i$-th outgoing lane.
@@ -181,11 +177,9 @@ There are two general options on building the prediction network. The first one 
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=16cm]{figures/predictionNetworkAlt1}
-  \caption[Prediction Network General Architecture Alternative 1]{Prediction Network General Architecture Alternative 1 \protect\footnotemark}
+  \caption{Prediction Network General Architecture Alternative 1}
   \label{predictionNetworkAlt1}
 \end{figure}
-
-\footnotetext{own illustration}
 
 Figure \ref{predictionNetworkAlt1} shows the first alternative for the prediction network architecture. In this example there is a road network with four road crossings (C1, C2, C3, C4). The parallel lines that are close together show the two lanes of each road. 
 
@@ -194,11 +188,9 @@ As said earlier the first possibility to design the prediction network is to fee
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=16cm]{figures/predictionNetworkAlt2}
-  \caption[Prediction Network General Architecture Alternative 2]{Prediction Network General Architecture Alternative 2 \protect\footnotemark}
+  \caption{Prediction Network General Architecture Alternative 2}
   \label{predictionNetworkAlt2}
 \end{figure}
-
-\footnotetext{own illustration}
 
 Figure \ref{predictionNetworkAlt2} shows the second option for the prediction network architecture. This example uses the same road network as the first, but instead of having one artificial neural network that maps the whole state of the road network, there are neural networks for every decision point in the road network instead. This means for every point in the road where a vehicle can drive down multiple ways an artificial neural network is placed.
 
@@ -219,11 +211,9 @@ The focus for the prediction network is on simplicity and reliability. This is m
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=16cm]{figures/predictionNetwork}
-  \caption[Class Diagram Prediction Network]{Class Diagram Prediction Network \protect\footnotemark}
+  \caption{Class Diagram Prediction Network}
   \label{predictionNetwork}
 \end{figure}
-
-\footnotetext{own illustration}
 
 The prediction network will mainly contain a map of decision points to their neural networks. There are two methods. One to get a prediction for a link that leads into a decision point. The second argument of this method is the list of input parameters for the artificial neural networks, like the time of the day. The result is the output of the neural network. The second function is to learn from data sets. Data sets are just sets of input and output values that the artificial neural network learns from.
 
@@ -241,7 +231,7 @@ The problem with traffic sensors is that they come in many different forms and p
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=14cm]{figures/trackerSensorInterface}
-  \caption[Traffic Tracker Sensor Interface]{Traffic Tracker Sensor Interface \protect\footnotemark}
+  \caption{Traffic Tracker Sensor Interface}
   \label{trafficTrackerSensorInterface}
 \end{figure}
 
@@ -260,7 +250,7 @@ The random number option is easier to implement and has fewer implications on th
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=16cm]{figures/splitVehicles}
-  \caption[Traffic Tracker Error Correction]{Traffic Tracker Error Correction \protect\footnotemark}
+  \caption{Traffic Tracker Error Correction}
   \label{trafficTrackerErrorCorrection}
 \end{figure}
 
@@ -273,7 +263,7 @@ The second solution does not only make error correction easier, but also makes t
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=14cm]{figures/trackerClassDiagram}
-  \caption[Class Diagram Traffic Tracker]{Class Diagram Traffic Tracker \protect\footnotemark}
+  \caption{Class Diagram Traffic Tracker}
   \label{trafficTracker}
 \end{figure}
 

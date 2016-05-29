@@ -29,8 +29,8 @@ For reference, a simple fixed-cycle signal controller is used, that has a config
 	\addplot coordinates {(262385,10s) (246490,30s) (242953,60s) (240975,120s) (241523,180s) (247402,240s)};
 	\end{axis}
 	\end{tikzpicture}
+	\caption{Simulation Durations For The Fixed Cycle Signal Controller.}
 	\label{cycle_based_results}
-	\caption{Simulation durations for the fixed cycle signal controller.}
 \end{figure}
 
 The fixed-cycle signal controller is compared to the stress-based signal controller, using a priority queue like approach instead of cycles (see \autoref{trafficLightController} for more details). The stress functions are selected from a small set of defined functions to show the differences they can make.
@@ -40,7 +40,7 @@ The following four functions ($\mathbb{R}^2 \mapsto \mathbb{R}$) have been selec
 \begin{enumerate}
 	\item $f(n, t) = w_n n + w_tt$
 	\item $g(n, t) = \frac{w_n n^2}{2} + \frac{w_t t^2}{2}$
-	\item $h(n, t) = (n + t)(n + c)$ (see \autoref{proposed_stress})
+	\item $h(n, t) = (n + t)(n + c)$ (See \autoref{proposed_stress})
 	\item $i(n, t) = n$
 \end{enumerate}
 
@@ -69,8 +69,8 @@ The phase duration has been calculated with ten seconds per waiting vehicles wit
 \legend{dumb,trained,perfect}
 \end{axis}
 \end{tikzpicture}
+\caption{Simulation Durations For The Stress Based Signal Controller.}
 \label{stress_based_results}
-\caption{Simulation durations for the stress based signal controller.}
 \end{figure}
 
 Looking at \autoref{stress_based_results}, the first thing to notice, is that the function $i$ has only one value compared to three like the other functions have. All four stress function were tested under three conditions:
@@ -104,8 +104,8 @@ This diagram directly confirms the importance of the time factor as mentioned in
 	\legend{Cycle Controller, {h(n, t)}, {f(n, t)}, {g(n, t)}, {i(n, t)}}
 	\end{axis}
 	\end{tikzpicture}
+	\caption{Agents Living Per Time Unit Without Previous Learning.}
 	\label{agent_statistic_dumb}
-	\caption{Agents living per time unit without previous learning.}
 \end{figure}
 
 
@@ -133,13 +133,13 @@ In \autoref{agent_statistic_dumb} the graphs for the test with the untrained net
 	\legend{Cycle Controller, {h(n, t)}, {f(n, t)}, {g(n, t)}, {i(n, t)}}
 	\end{axis}
 	\end{tikzpicture}
+	\caption{Agents Living Per Time Unit With Previous Learning.}
 	\label{agent_statistic_learned}
-	\caption{Agents living per time unit with previous learning.}
 \end{figure}
 
 The second diagram, \autoref{agent_statistic_learned}, more clearly shows the improvement when training the prediction network. Function $i$ peaks at about 8,000 agents, then loses a few hundred agents before becoming stable again. While the problem is still there, an improvement is already visible. A real improvement can be seen with function $h$, as it peaks at only about 3000 agents and only after another 17 to 18 hours all agents are gone. That is a good improvement and almost 50\% better than the cycle-based controller both in simulation duration and peak agent count. Functions $f$ and $g$ performed both about the same as without any training.
 
-Finally under optimal conditions the results are, which is to be expected, much better. The functions $f$ and $g$ have the highest peak in this scenario with still over 2,000 agents at the same time on the streets, $h$ is only slightly better. The $i$ function's graph is interesting, because there is almost no buildup of agents in the network and it peaks below 1,000 agents which are gone just about an hour later.
+Finally under optimal conditions the results are, which is to be expected, much better. (As seen in \autoref{agent_statistic_perfect}) The functions $f$ and $g$ have the highest peak in this scenario with still over 2,000 agents at the same time on the streets, $h$ is only slightly better. The $i$ function's graph is interesting, because there is almost no buildup of agents in the network and it peaks below 1,000 agents which are gone just about an hour later.
 
 The last two diagrams show that with good predictions, less weight on the time aspects yields better results. No time aspect however will lead to problems in the real world. 
 
@@ -162,6 +162,6 @@ The last two diagrams show that with good predictions, less weight on the time a
 	\legend{Cycle Controller, {h(n, t)}, {f(n, t)}, {g(n, t)}, {i(n, t)}}
 	\end{axis}
 	\end{tikzpicture}
+	\caption{Agents Living Per Time Unit With Perfect Predictions.}
 	\label{agent_statistic_perfect}
-	\caption{Agents living per time unit with perfect predictions.}
 \end{figure}
